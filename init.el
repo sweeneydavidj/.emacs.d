@@ -14,11 +14,19 @@
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+;; Not working ???
+;;(setq backup-directory-alist `(("." . "~/tmp/emacs-backup/")))
+
+(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
 (global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
+
+(setq custom-file "~/.emacs.d/custom-file.el")
+(load-file custom-file)
 
 (use-package doom-themes
   :ensure t
@@ -36,6 +44,16 @@
 (use-package solaire-mode
   :config
   (solaire-global-mode 1))
+
+(use-package bind-map)
+
+(bind-map my-file-map
+  :evil-keys ("SPC")
+  :evil-states (normal motion visual))
+
+(bind-map-set-keys my-file-map
+  "fj" 'dired-jump
+  )
 
 (use-package which-key
   :init (which-key-mode)
@@ -74,19 +92,14 @@
   :config
   (global-evil-surround-mode 1))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("02f57ef0a20b7f61adce51445b68b2a7e832648ce2e7efb19d217b6454c1b644" "adaf421037f4ae6725aa9f5654a2ed49e2cd2765f71e19a7d26a454491b486eb" "443e2c3c4dd44510f0ea8247b438e834188dc1c6fb80785d83ad3628eadf9294" default))
- '(helm-minibuffer-history-key "M-p")
- '(package-selected-packages
-   '(evil-surround spacemacs-theme solaire-mode doom-themes beacon general which-key evil use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(defun my-dired-up-directory ()
+  "Take dired up one directory, but behave like dired-find-alternate-file"
+  (interactive)
+  (let ((old (current-buffer)))
+    (dired-up-directory)
+    (kill-buffer old)))
+
+(with-eval-after-load 'dired
+  (define-key evil-motion-state-map (kbd "h") 'my-dired-up-directory)
+  (define-key evil-motion-state-map (kbd "l")  'dired-find-alternate-file))
+(put 'dired-find-alternate-file 'disabled nil)
