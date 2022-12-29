@@ -33,7 +33,7 @@
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+	doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
@@ -44,16 +44,6 @@
 (use-package solaire-mode
   :config
   (solaire-global-mode 1))
-
-(use-package bind-map)
-
-(bind-map my-file-map
-  :evil-keys ("SPC")
-  :evil-states (normal motion visual))
-
-(bind-map-set-keys my-file-map
-  "fj" 'dired-jump
-  )
 
 (use-package which-key
   :init (which-key-mode)
@@ -79,27 +69,55 @@
   (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
-  (evil-set-undo-system 'undo-redo))
+  (evil-set-undo-system 'undo-redo)
+  )
 
 (use-package evil-collection
   :after evil
   :ensure t
   :config
-  (evil-collection-init))
+  (evil-collection-init)
+  )
 
 (use-package evil-surround
   :ensure t
   :config
   (global-evil-surround-mode 1))
 
-(defun my-dired-up-directory ()
-  "Take dired up one directory, but behave like dired-find-alternate-file"
+;; Adapted from spacemacs funcs.el
+;; which was adapted from...
+;; https://emacsredux.com/blog/2013/05/18/instant-access-to-init-dot-el/
+(defun dsw-find-user-init-file ()
+  "Edit the User's init file in the current window"
   (interactive)
-  (let ((old (current-buffer)))
-    (dired-up-directory)
-    (kill-buffer old)))
+  (find-file-existing user-init-file))
 
-(with-eval-after-load 'dired
-  (define-key evil-motion-state-map (kbd "h") 'my-dired-up-directory)
-  (define-key evil-motion-state-map (kbd "l")  'dired-find-alternate-file))
-(put 'dired-find-alternate-file 'disabled nil)
+;; To see more about intercept keymaps see...
+;; https://github.com/emacs-evil/evil-collection#key-translation
+;; https://github.com/syl20bnr/spacemacs/wiki/Keymaps-guide
+(defvar dsw-intercept-mode-map (make-sparse-keymap)
+  "High precedence keymap.")
+
+(define-minor-mode dsw-intercept-mode
+  "Global minor mode for higher precedence evil keybindings."
+  :global t)
+
+(dsw-intercept-mode)
+
+(evil-make-intercept-map dsw-intercept-mode-map 'normal)
+
+(setq dsw-buffer-map (make-sparse-keymap))
+(define-key dsw-buffer-map "b" 'helm-buffers-list)
+(define-key dsw-buffer-map "n" 'next-buffer)
+(define-key dsw-buffer-map "p" 'previous-buffer)
+(define-key dsw-buffer-map "d" 'kill-current-buffer)
+
+(setq dsw-file-map (make-sparse-keymap))
+(define-key dsw-file-map "f" 'helm-find-files)
+(define-key dsw-file-map "i" 'dsw-find-user-init-file)
+(define-key dsw-file-map "j" 'dired-jump)
+
+;; In order to get the prefix key text in which-key see
+;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC b") (cons "buffer" dsw-buffer-map))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC f") (cons "file" dsw-file-map))
