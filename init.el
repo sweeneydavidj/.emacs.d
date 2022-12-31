@@ -25,6 +25,9 @@
 (global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
 
+(setq scroll-conservatively 101)
+(setq scroll-margin 5)
+
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
 
