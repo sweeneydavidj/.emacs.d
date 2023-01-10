@@ -14,8 +14,7 @@
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; Not working ???
-;;(setq backup-directory-alist `(("." . "~/tmp/emacs-backup/")))
+(setq backup-directory-alist `(("." . "~/tmp/emacs-backup/")))
 
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 
@@ -77,15 +76,17 @@
 
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
   (evil-collection-init)
   )
 
 (use-package evil-surround
-  :ensure t
   :config
   (global-evil-surround-mode 1))
+
+(use-package evil-exchange
+  :config
+  (evil-exchange-install))
 
 ;; Adapted from spacemacs funcs.el
 ;; which was adapted from...
@@ -119,6 +120,7 @@
 (define-key dsw-file-map "f" 'helm-find-files)
 (define-key dsw-file-map "i" 'dsw-find-user-init-file)
 (define-key dsw-file-map "j" 'dired-jump)
+(define-key dsw-file-map "r" 'helm-recentf)
 
 ;; In order to get the prefix key text in which-key see
 ;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
