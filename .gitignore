@@ -1,6 +1,7 @@
 auto-save-list/
 eln-cache/
 elpa/
+transient/
 projects
 recentf
 custom-file.el
