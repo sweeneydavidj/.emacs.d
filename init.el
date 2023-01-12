@@ -1,5 +1,6 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
 ;;TODO straight.el package manager ?
@@ -65,6 +66,9 @@
   (global-set-key (kbd "M-x") 'helm-M-x)
   )
 
+(use-package magit
+  :pin melpa-stable)
+
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -122,7 +126,11 @@
 (define-key dsw-file-map "j" 'dired-jump)
 (define-key dsw-file-map "r" 'helm-recentf)
 
+(setq dsw-magit-map (make-sparse-keymap))
+(define-key dsw-magit-map "s" 'magit-status)
+
 ;; In order to get the prefix key text in which-key see
 ;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC b") (cons "buffer" dsw-buffer-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC f") (cons "file" dsw-file-map))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC g") (cons "magit" dsw-magit-map))
