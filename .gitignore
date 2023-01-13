@@ -1,7 +1,8 @@
 auto-save-list/
+custom-file.el
 eln-cache/
 elpa/
-transient/
+projectile-bookmarks.eld
 projects
 recentf
-custom-file.el
+transient/
