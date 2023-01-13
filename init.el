@@ -54,9 +54,18 @@
   :config
   (setq which-key-idle-delay 0.3))
 
+(use-package markdown-mode
+  :mode ("\\.md\\'" . markdown-mode))
+
 (use-package company
   :config
-  (company-mode 1))
+  (global-company-mode 1))
+
+(use-package projectile
+  :config
+  (projectile-mode 1)
+  :bind (:map projectile-mode-map
+	      ("C-c p" . projectile-command-map)))
 
 (use-package helm
   :config
@@ -65,6 +74,12 @@
   (global-set-key (kbd "C-x b") 'helm-buffers-list)
   (global-set-key (kbd "M-x") 'helm-M-x)
   )
+
+(use-package helm-ag)
+
+(use-package helm-projectile
+  :config
+  (helm-projectile-on))
 
 (use-package magit
   :pin melpa-stable)
@@ -129,8 +144,14 @@
 (setq dsw-magit-map (make-sparse-keymap))
 (define-key dsw-magit-map "s" 'magit-status)
 
+(setq dsw-project-map (make-sparse-keymap))
+(define-key dsw-project-map "f" 'projectile-find-file)
+
 ;; In order to get the prefix key text in which-key see
 ;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC b") (cons "buffer" dsw-buffer-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC f") (cons "file" dsw-file-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC g") (cons "magit" dsw-magit-map))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC p") (cons "project" dsw-project-map))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC /") (cons "search project" 'helm-projectile-ag))
+
