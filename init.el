@@ -84,6 +84,12 @@
 (use-package magit
   :pin melpa-stable)
 
+(use-package elixir-mode)
+
+(use-package smartparens
+  :config
+  (smartparens-global-mode))
+
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -147,11 +153,37 @@
 (setq dsw-project-map (make-sparse-keymap))
 (define-key dsw-project-map "f" 'projectile-find-file)
 
+(setq dsw-window-map (make-sparse-keymap))
+(define-key dsw-window-map "d" 'evil-window-delete)
+(define-key dsw-window-map "m" 'delete-other-windows) ;; maximize
+(define-key dsw-window-map "h" 'evil-window-left)
+(define-key dsw-window-map "l" 'evil-window-right)
+(define-key dsw-window-map "j" 'evil-window-down)
+(define-key dsw-window-map "k" 'evil-window-up)
+
 ;; In order to get the prefix key text in which-key see
 ;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC b") (cons "buffer" dsw-buffer-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC f") (cons "file" dsw-file-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC g") (cons "magit" dsw-magit-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC p") (cons "project" dsw-project-map))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC w") (cons "window" dsw-window-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC /") (cons "search project" 'helm-projectile-ag))
 
+(put 'dired-find-alternate-file 'disabled nil)
+
+(defun dsw-dired-up-directory ()
+  "Take dired up one directory, but behave like dired-find-alternate-file"
+  (interactive)
+  (let ((old (current-buffer)))
+    (dired-up-directory)
+    (kill-buffer old)
+    ))
+
+;; For inspiration see the answer here...
+;; https://emacs.stackexchange.com/questions/26450/how-to-remap-to-in-evil-mode
+
+(with-eval-after-load 'dired
+ (evil-define-key 'normal dired-mode-map (kbd "h") 'dsw-dired-up-directory)
+ (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file)
+  )
