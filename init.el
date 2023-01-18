@@ -229,6 +229,7 @@
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC p") (cons "project" dsw-project-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC w") (cons "window" dsw-window-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC /") (cons "search project" 'helm-projectile-ag))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC SPC") (cons "M-x" 'helm-M-x))
 
 (put 'dired-find-alternate-file 'disabled nil)
 
@@ -247,3 +248,8 @@
  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file)
   )
 
+(eval-after-load 'elixir
+  (evil-define-key 'normal elixir-mode-map (kbd "SPC =") (cons "format" 'lsp-format-buffer))
+  )
+
+;;; init.el ends here
