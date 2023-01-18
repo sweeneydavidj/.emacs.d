@@ -25,11 +25,17 @@
 (global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
 
+;; https://github.com/syl20bnr/spacemacs/issues/5070
+(setq-default evil-kill-on-visual-paste nil)
+
 (setq scroll-conservatively 101)
 (setq scroll-margin 5)
 
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
+
+;; Set anyway, but this is actually the default
+(set-frame-font "UbuntuMono-13" nil t)
 
 (use-package doom-themes
   :ensure t
@@ -55,7 +61,10 @@
   (setq which-key-idle-delay 0.3))
 
 (use-package markdown-mode
-  :mode ("\\.md\\'" . markdown-mode))
+  :mode ("\\.md\\'" . markdown-mode)
+  :config
+  (setq markdown-command "pandoc"))
+
 
 (use-package company
   :config
@@ -81,14 +90,52 @@
   :config
   (helm-projectile-on))
 
+(use-package helm-descbinds
+  :config
+  (helm-descbinds-mode 1))
+
 (use-package magit
   :pin melpa-stable)
-
-(use-package elixir-mode)
 
 (use-package smartparens
   :config
   (smartparens-global-mode))
+
+(use-package elixir-mode)
+
+;; https://elixirforum.com/t/emacs-elixir-setup-configuration-wiki/19196/161
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored "artifacts$")
+  (add-to-list 'lsp-file-watch-ignored "assets$")
+  (add-to-list 'lsp-file-watch-ignored "_build$")
+  (add-to-list 'lsp-file-watch-ignored "chemo_engine$")
+  (add-to-list 'lsp-file-watch-ignored "strat_calc$")
+  (add-to-list 'lsp-file-watch-ignored "chemo_calc$")
+  (add-to-list 'lsp-file-watch-ignored "reflex$")
+  (add-to-list 'lsp-file-watch-ignored "reflex_viz$")
+  (add-to-list 'lsp-file-watch-ignored "deps$")
+  (add-to-list 'lsp-file-watch-ignored "docker$")
+  (add-to-list 'lsp-file-watch-ignored "docs$")
+  (add-to-list 'lsp-file-watch-ignored ".elixir_ls$")
+  (add-to-list 'lsp-file-watch-ignored "priv/static$")
+  )
+
+(use-package flycheck
+  :init
+  (global-flycheck-mode))
+
+;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+;; (package-refresh-contents)
+(use-package lsp-mode
+  :init
+  (add-to-list 'exec-path "/opt/elixir-ls/release")
+  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-lens-enable nil)
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+  (elixir-mode . lsp)
+  :commands lsp)
 
 (use-package evil
   :init
@@ -121,6 +168,11 @@
   (interactive)
   (find-file-existing user-init-file))
 
+(defun dsw-switch-scratch-bufer ()
+  "Edit the User's init file in the current window"
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
 ;; To see more about intercept keymaps see...
 ;; https://github.com/emacs-evil/evil-collection#key-translation
 ;; https://github.com/syl20bnr/spacemacs/wiki/Keymaps-guide
@@ -140,6 +192,7 @@
 (define-key dsw-buffer-map "n" 'next-buffer)
 (define-key dsw-buffer-map "p" 'previous-buffer)
 (define-key dsw-buffer-map "d" 'kill-current-buffer)
+(define-key dsw-buffer-map "s" 'dsw-switch-scratch-bufer)
 
 (setq dsw-file-map (make-sparse-keymap))
 (define-key dsw-file-map "f" 'helm-find-files)
@@ -149,6 +202,12 @@
 
 (setq dsw-magit-map (make-sparse-keymap))
 (define-key dsw-magit-map "s" 'magit-status)
+
+(setq dsw-jump-map (make-sparse-keymap))
+(define-key dsw-jump-map "b" 'xref-pop-marker-stack)
+(define-key dsw-jump-map "d" 'lsp-find-definition)
+(define-key dsw-jump-map "i" 'lsp-find-implementation)
+(define-key dsw-jump-map "r" 'lsp-find-references)
 
 (setq dsw-project-map (make-sparse-keymap))
 (define-key dsw-project-map "f" 'projectile-find-file)
@@ -166,6 +225,7 @@
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC b") (cons "buffer" dsw-buffer-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC f") (cons "file" dsw-file-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC g") (cons "magit" dsw-magit-map))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC j") (cons "jump" dsw-jump-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC p") (cons "project" dsw-project-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC w") (cons "window" dsw-window-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC /") (cons "search project" 'helm-projectile-ag))
@@ -173,7 +233,7 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (defun dsw-dired-up-directory ()
-  "Take dired up one directory, but behave like dired-find-alternate-file"
+  "Take Dired up one directory, but behave like `dired-find-alternate-file`."
   (interactive)
   (let ((old (current-buffer)))
     (dired-up-directory)
@@ -182,8 +242,8 @@
 
 ;; For inspiration see the answer here...
 ;; https://emacs.stackexchange.com/questions/26450/how-to-remap-to-in-evil-mode
-
 (with-eval-after-load 'dired
  (evil-define-key 'normal dired-mode-map (kbd "h") 'dsw-dired-up-directory)
  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file)
   )
+
