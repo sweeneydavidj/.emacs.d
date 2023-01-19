@@ -203,6 +203,9 @@
 (setq dsw-magit-map (make-sparse-keymap))
 (define-key dsw-magit-map "s" 'magit-status)
 
+(setq dsw-help-map (make-sparse-keymap))
+(define-key dsw-help-map "l" 'find-library)
+
 (setq dsw-jump-map (make-sparse-keymap))
 (define-key dsw-jump-map "b" 'xref-pop-marker-stack)
 (define-key dsw-jump-map "d" 'lsp-find-definition)
@@ -225,6 +228,7 @@
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC b") (cons "buffer" dsw-buffer-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC f") (cons "file" dsw-file-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC g") (cons "magit" dsw-magit-map))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC h") (cons "help" dsw-help-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC j") (cons "jump" dsw-jump-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC p") (cons "project" dsw-project-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC w") (cons "window" dsw-window-map))
