@@ -186,20 +186,6 @@
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-;; To see more about intercept keymaps see...
-;; https://github.com/emacs-evil/evil-collection#key-translation
-;; https://github.com/syl20bnr/spacemacs/wiki/Keymaps-guide
-(defvar dsw-intercept-mode-map (make-sparse-keymap)
-  "High precedence keymap.")
-
-(define-minor-mode dsw-intercept-mode
-  "Global minor mode for higher precedence evil keybindings."
-  :global t)
-
-(dsw-intercept-mode)
-
-(evil-make-intercept-map dsw-intercept-mode-map 'normal)
-
 (setq dsw-buffer-map (make-sparse-keymap))
 (define-key dsw-buffer-map "b" 'helm-buffers-list)
 (define-key dsw-buffer-map "n" 'next-buffer)
@@ -240,18 +226,28 @@
 (define-key dsw-window-map "j" 'evil-window-down)
 (define-key dsw-window-map "k" 'evil-window-up)
 
+(use-package bind-map)
+
+(bind-map dsw-base-leader-map
+  :keys ("C-SPC")
+  :evil-keys ("SPC")
+  :evil-states (normal motion visual)
+  :override-minor-modes t)
+
 ;; In order to get the prefix key text in which-key see
 ;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC b") (cons "buffer" dsw-buffer-map))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC c") (cons "comment" dsw-comment-map))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC f") (cons "file" dsw-file-map))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC g") (cons "magit" dsw-magit-map))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC h") (cons "help" dsw-help-map))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC j") (cons "jump" dsw-jump-map))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC p") (cons "project" dsw-project-map))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC w") (cons "window" dsw-window-map))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC /") (cons "search project" 'helm-projectile-ag))
-(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC SPC") (cons "M-x" 'helm-M-x))
+
+(bind-map-set-keys dsw-base-leader-map
+  "b" (cons "buffer" dsw-buffer-map)
+  "c" (cons "comment" dsw-comment-map)
+  "f" (cons "file" dsw-file-map)
+  "g" (cons "magit" dsw-magit-map)
+  "h" (cons "help" dsw-help-map)
+  "j" (cons "jump" dsw-jump-map)
+  "p" (cons "project" dsw-project-map)
+  "w" (cons "window" dsw-window-map)
+  "/" (cons "search project" 'helm-projectile-ag)
+  "SPC" (cons "M-x" 'helm-M-x))
 
 (put 'dired-find-alternate-file 'disabled nil)
 
