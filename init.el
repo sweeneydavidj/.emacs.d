@@ -1,3 +1,9 @@
+;;; package --- Some summary
+
+;;; Commentary:
+;;; some commentary
+
+;;; Code:
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
@@ -35,7 +41,7 @@
 (load-file custom-file)
 
 ;; Set anyway, but this is actually the default
-(set-frame-font "UbuntuMono-13" nil t)
+(set-frame-font "UbuntuMono-15" nil t)
 
 (use-package doom-themes
   :ensure t
@@ -65,6 +71,9 @@
   :config
   (setq markdown-command "pandoc"))
 
+(use-package yasnippet
+  :config
+  (yas-global-mode 1))
 
 (use-package company
   :config
@@ -160,6 +169,8 @@
   :config
   (evil-exchange-install))
 
+(use-package evil-nerd-commenter)
+
 ;; Adapted from spacemacs funcs.el
 ;; which was adapted from...
 ;; https://emacsredux.com/blog/2013/05/18/instant-access-to-init-dot-el/
@@ -194,6 +205,10 @@
 (define-key dsw-buffer-map "d" 'kill-current-buffer)
 (define-key dsw-buffer-map "s" 'dsw-switch-scratch-bufer)
 
+(setq dsw-comment-map (make-sparse-keymap))
+(define-key dsw-comment-map "l" 'evilnc-comment-or-uncomment-lines)
+(define-key dsw-comment-map "p" 'evilnc-comment-or-uncomment-paragraphs)
+
 (setq dsw-file-map (make-sparse-keymap))
 (define-key dsw-file-map "f" 'helm-find-files)
 (define-key dsw-file-map "i" 'dsw-find-user-init-file)
@@ -226,6 +241,7 @@
 ;; In order to get the prefix key text in which-key see
 ;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC b") (cons "buffer" dsw-buffer-map))
+(evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC c") (cons "comment" dsw-comment-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC f") (cons "file" dsw-file-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC g") (cons "magit" dsw-magit-map))
 (evil-define-key 'normal dsw-intercept-mode-map (kbd "SPC h") (cons "help" dsw-help-map))
