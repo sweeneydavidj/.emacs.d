@@ -104,7 +104,9 @@
   (helm-descbinds-mode 1))
 
 (use-package magit
-  :pin melpa-stable)
+  :pin melpa-stable
+  :config
+  (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1))
 
 (use-package smartparens
   :config
@@ -175,12 +177,12 @@
 ;; which was adapted from...
 ;; https://emacsredux.com/blog/2013/05/18/instant-access-to-init-dot-el/
 (defun dsw-find-user-init-file ()
-  "Edit the User's init file in the current window"
+  "Edit the User's init file in the current window."
   (interactive)
   (find-file-existing user-init-file))
 
 (defun dsw-switch-scratch-bufer ()
-  "Edit the User's init file in the current window"
+  "Edit the User's init file in the current window."
   (interactive)
   (switch-to-buffer "*scratch*"))
 
