@@ -234,6 +234,9 @@
   :evil-states (normal motion visual)
   :override-minor-modes t)
 
+;; See the Keymaps hierarchy guide here...
+;; https://github.com/syl20bnr/spacemacs/wiki/Keymaps-guide
+;;
 ;; In order to get the prefix key text in which-key see
 ;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
 
