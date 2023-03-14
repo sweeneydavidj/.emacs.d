@@ -36,6 +36,7 @@
 
 (setq scroll-conservatively 101)
 (setq scroll-margin 5)
+(setq column-number-mode t)
 
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
@@ -186,6 +187,9 @@
   (interactive)
   (switch-to-buffer "*scratch*"))
 
+(define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+(define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+
 (setq dsw-buffer-map (make-sparse-keymap))
 (define-key dsw-buffer-map "b" 'helm-buffers-list)
 (define-key dsw-buffer-map "n" 'next-buffer)
@@ -225,6 +229,8 @@
 (define-key dsw-window-map "l" 'evil-window-right)
 (define-key dsw-window-map "j" 'evil-window-down)
 (define-key dsw-window-map "k" 'evil-window-up)
+(define-key dsw-window-map "s" 'evil-window-split)
+(define-key dsw-window-map "v" 'evil-window-vsplit)
 
 (use-package bind-map)
 
