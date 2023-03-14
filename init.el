@@ -149,20 +149,30 @@
   (elixir-mode . lsp)
   :commands lsp)
 
+(use-package web-mode
+  :mode ("\\.heex\\'" . web-mode)
+  :config
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-indent-style 2)
+    (setq web-mode-script-padding 2)
+    (setq web-mode-style-padding 2)
+    (setq web-mode-block-padding 2))
+
 (use-package evil
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  (setq evil-search-module 'evil-search)
   :config
   (evil-mode 1)
-  (evil-set-undo-system 'undo-redo)
-  )
+  (evil-set-undo-system 'undo-redo))
 
 (use-package evil-collection
   :after evil
   :config
-  (evil-collection-init)
-  )
+  (evil-collection-init))
 
 (use-package evil-surround
   :config
