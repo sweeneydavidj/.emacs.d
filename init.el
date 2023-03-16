@@ -21,7 +21,15 @@
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-(setq backup-directory-alist `(("." . "~/tmp/emacs-backup/")))
+;; There are three different functions that tend to clutter the directory tree.
+;; backup, autosave and file locks
+;; We keep the functionality but just move them out of the way.
+;;
+;; Autosave can be customised the same way as lockfiles below
+;; using the variable auto-save-file-name-transforms, but by default
+;; it is set to the system /tmp directory.
+(setq backup-directory-alist `(("." . "~/tmp/emacs-backups/")))
+(setq lock-file-name-transforms `((".*" "~/tmp/emacs-lockfiles/" t)))
 
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 
