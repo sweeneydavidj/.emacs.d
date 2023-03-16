@@ -168,6 +168,13 @@
     (setq web-mode-style-padding 2)
     (setq web-mode-block-padding 2))
 
+;; Make sure Emacs has support for dynamic modules...
+;; C-h v system-configuration-options
+;; value should include --with-modules
+;; Install necessary packages...
+;; sudo apt install cmake libtool libtool-bin
+(use-package vterm)
+
 (use-package evil
   :init
   (setq evil-want-integration t)
