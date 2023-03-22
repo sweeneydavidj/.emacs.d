@@ -38,6 +38,9 @@
 
 (global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
+;; When format or update from Git outside of Emacs
+;; then reload changed buffers
+(global-auto-revert-mode 1)
 
 ;; https://github.com/syl20bnr/spacemacs/issues/5070
 (setq-default evil-kill-on-visual-paste nil)
@@ -45,6 +48,7 @@
 (setq scroll-conservatively 101)
 (setq scroll-margin 5)
 (setq column-number-mode t)
+(setq recentf-max-saved-items 100)
 
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
