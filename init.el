@@ -119,7 +119,8 @@
 (use-package magit
   :pin melpa-stable
   :config
-  (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1))
+  (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
+  (setq magit-bury-buffer-function 'magit-restore-window-configuration))
 
 (use-package smartparens
   :config
