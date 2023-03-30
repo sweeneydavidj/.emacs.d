@@ -178,7 +178,7 @@
 ;; value should include --with-modules
 ;; Install necessary packages...
 ;; sudo apt install cmake libtool libtool-bin
-(use-package vterm)
+;; (use-package vterm)
 
 (use-package evil
   :init
