@@ -7,4 +7,6 @@ flycheck_init.el
 projectile-bookmarks.eld
 projects
 recentf
+tree-sitter/
 transient/
+tramp

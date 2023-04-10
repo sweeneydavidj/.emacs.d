@@ -126,6 +126,8 @@
   :config
   (smartparens-global-mode))
 
+(require 'treesit)
+
 (use-package elixir-mode)
 
 ;; https://elixirforum.com/t/emacs-elixir-setup-configuration-wiki/19196/161
