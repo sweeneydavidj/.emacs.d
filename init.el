@@ -56,8 +56,9 @@
 ;; Set anyway, but this is actually the default
 (set-frame-font "UbuntuMono-15" nil t)
 
+(use-package diminish)
+
 (use-package doom-themes
-  :ensure t
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -124,6 +125,7 @@
   (setq magit-bury-buffer-function 'magit-restore-window-configuration))
 
 (use-package smartparens
+  :diminish smartparens-mode
   :config
   (smartparens-global-mode))
 
@@ -168,6 +170,7 @@
 
 (use-package evil-collection
   :after evil
+  :diminish evil-collection-unimpaired-mode
   :config
   (evil-collection-init))
 
