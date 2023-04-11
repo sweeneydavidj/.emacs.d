@@ -46,7 +46,7 @@
 (setq-default evil-kill-on-visual-paste nil)
 
 (setq scroll-conservatively 101)
-(setq scroll-margin 5)
+(setq scroll-margin 3)
 (setq column-number-mode t)
 (setq recentf-max-saved-items 100)
 
@@ -92,6 +92,7 @@
   :config
   (global-company-mode 1))
 
+;; TODO use built-in project instead?
 (use-package projectile
   :config
   (projectile-mode 1)
@@ -127,45 +128,19 @@
   (smartparens-global-mode))
 
 (require 'treesit)
+(require 'heex-ts-mode)
+(require 'elixir-ts-mode)
 
-(use-package elixir-mode)
-
-;; https://elixirforum.com/t/emacs-elixir-setup-configuration-wiki/19196/161
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored "artifacts$")
-  (add-to-list 'lsp-file-watch-ignored "assets$")
-  (add-to-list 'lsp-file-watch-ignored "_build$")
-  (add-to-list 'lsp-file-watch-ignored "chemo_engine$")
-  (add-to-list 'lsp-file-watch-ignored "strat_calc$")
-  (add-to-list 'lsp-file-watch-ignored "chemo_calc$")
-  (add-to-list 'lsp-file-watch-ignored "reflex$")
-  (add-to-list 'lsp-file-watch-ignored "reflex_viz$")
-  (add-to-list 'lsp-file-watch-ignored "deps$")
-  (add-to-list 'lsp-file-watch-ignored "docker$")
-  (add-to-list 'lsp-file-watch-ignored "docs$")
-  (add-to-list 'lsp-file-watch-ignored ".elixir_ls$")
-  (add-to-list 'lsp-file-watch-ignored "priv/static$")
-  )
-
-(use-package flycheck
-  :init
-  (global-flycheck-mode))
-
-;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
-;; (package-refresh-contents)
-(use-package lsp-mode
-  :init
-  (add-to-list 'exec-path "/opt/elixir-ls/release")
-  (setq lsp-keymap-prefix "C-c l")
-  (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-lens-enable nil)
-  :hook
-  (lsp-mode . lsp-enable-which-key-integration)
-  (elixir-mode . lsp)
-  :commands lsp)
+;; elixir-mode, elixir-ts-mode, heex-ts-mode
+;; are setup in the eglot-server-programs variable to look for
+;; language_server.sh
+;; so just add that to the path in ~/.profile using...
+;; PATH="/opt/elixir-ls/release:$PATH"
+(require 'eglot)
+(add-hook 'elixir-ts-mode-hook 'eglot-ensure)
 
 (use-package web-mode
-  :mode ("\\.heex\\'" . web-mode)
+  ;; :mode ("\\.heex\\'" . web-mode)
   :config
     (setq web-mode-markup-indent-offset 2)
     (setq web-mode-css-indent-offset 2)
@@ -222,6 +197,8 @@
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
 
+(define-key evil-motion-state-map (kbd "gb") 'xref-go-back)
+
 (setq dsw-buffer-map (make-sparse-keymap))
 (define-key dsw-buffer-map "b" 'helm-buffers-list)
 (define-key dsw-buffer-map "n" 'next-buffer)
@@ -244,12 +221,10 @@
 
 (setq dsw-help-map (make-sparse-keymap))
 (define-key dsw-help-map "l" 'find-library)
+(define-key dsw-help-map "h" 'eldoc)
 
 (setq dsw-jump-map (make-sparse-keymap))
 (define-key dsw-jump-map "b" 'xref-pop-marker-stack)
-(define-key dsw-jump-map "d" 'lsp-find-definition)
-(define-key dsw-jump-map "i" 'lsp-find-implementation)
-(define-key dsw-jump-map "r" 'lsp-find-references)
 
 (setq dsw-project-map (make-sparse-keymap))
 (define-key dsw-project-map "f" 'projectile-find-file)
@@ -263,6 +238,10 @@
 (define-key dsw-window-map "k" 'evil-window-up)
 (define-key dsw-window-map "s" 'evil-window-split)
 (define-key dsw-window-map "v" 'evil-window-vsplit)
+
+(setq dsw-fly-map (make-sparse-keymap))
+(define-key dsw-fly-map "b" 'flymake-show-buffer-diagnostics)
+(define-key dsw-fly-map "p" 'flymake-show-project-diagnostics)
 
 (use-package bind-map)
 
@@ -287,6 +266,7 @@
   "j" (cons "jump" dsw-jump-map)
   "p" (cons "project" dsw-project-map)
   "w" (cons "window" dsw-window-map)
+  "y" (cons "fly" dsw-fly-map)
   "/" (cons "search project" 'helm-projectile-ag)
   "SPC" (cons "M-x" 'helm-M-x))
 
@@ -307,8 +287,8 @@
  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file)
   )
 
-(eval-after-load 'elixir
-  (evil-define-key 'normal elixir-mode-map (kbd "SPC =") (cons "format" 'lsp-format-buffer))
+(eval-after-load 'elixir-ts
+  (evil-define-key 'normal elixir-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer))
   )
 
 ;;; init.el ends here
