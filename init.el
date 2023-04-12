@@ -280,18 +280,18 @@
   (interactive)
   (let ((old (current-buffer)))
     (dired-up-directory)
-    (kill-buffer old)
-    ))
+    (kill-buffer old)))
 
 ;; For inspiration see the answer here...
 ;; https://emacs.stackexchange.com/questions/26450/how-to-remap-to-in-evil-mode
 (with-eval-after-load 'dired
  (evil-define-key 'normal dired-mode-map (kbd "h") 'dsw-dired-up-directory)
- (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file)
-  )
+ (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file))
 
 (eval-after-load 'elixir-ts
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer))
-  )
+  (evil-define-key 'normal elixir-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer)))
+
+(eval-after-load 'heex-ts
+  (evil-define-key 'normal heex-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer)))
 
 ;;; init.el ends here
