@@ -206,8 +206,9 @@
 (define-key evil-motion-state-map (kbd "gb") 'xref-go-back)
 
 (setq dsw-buffer-map (make-sparse-keymap))
-(define-key dsw-buffer-map "b" 'helm-buffers-list)
+(define-key dsw-buffer-map "l" 'helm-buffers-list)
 (define-key dsw-buffer-map "n" 'next-buffer)
+(define-key dsw-buffer-map "o" 'mode-line-other-buffer)
 (define-key dsw-buffer-map "p" 'previous-buffer)
 (define-key dsw-buffer-map "d" 'kill-current-buffer)
 (define-key dsw-buffer-map "s" 'dsw-switch-scratch-bufer)
