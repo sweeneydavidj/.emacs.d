@@ -49,6 +49,7 @@
 (setq scroll-margin 3)
 (setq column-number-mode t)
 (setq recentf-max-saved-items 100)
+(setq-default indent-tabs-mode nil)
 
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
