@@ -142,6 +142,8 @@
 (require 'eglot)
 (add-hook 'elixir-ts-mode-hook 'eglot-ensure)
 
+(setq js-indent-level 2)
+
 (use-package web-mode
   ;; :mode ("\\.heex\\'" . web-mode)
   :config
