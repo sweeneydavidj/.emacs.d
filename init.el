@@ -90,34 +90,21 @@
   :config
   (yas-global-mode 1))
 
-(use-package company
-  :config
-  (global-company-mode 1))
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  :init
+  (global-corfu-mode))
 
-;; TODO use built-in project instead?
-(use-package projectile
-  :config
-  (projectile-mode 1)
-  :bind (:map projectile-mode-map
-	      ("C-c p" . projectile-command-map)))
+(use-package vertico
+  :init
+  (vertico-mode))
 
-(use-package helm
-  :config
-  (helm-mode 1)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-  (global-set-key (kbd "C-x b") 'helm-buffers-list)
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  )
-
-(use-package helm-ag)
-
-(use-package helm-projectile
-  :config
-  (helm-projectile-on))
-
-(use-package helm-descbinds
-  :config
-  (helm-descbinds-mode 1))
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package magit
   :pin melpa-stable
@@ -206,7 +193,8 @@
 (define-key evil-motion-state-map (kbd "gb") 'xref-go-back)
 
 (setq dsw-buffer-map (make-sparse-keymap))
-(define-key dsw-buffer-map "l" 'helm-buffers-list)
+(define-key dsw-buffer-map "b" 'switch-to-buffer)
+(define-key dsw-buffer-map "B" 'switch-to-buffer-other-window)
 (define-key dsw-buffer-map "n" 'next-buffer)
 (define-key dsw-buffer-map "o" 'mode-line-other-buffer)
 (define-key dsw-buffer-map "p" 'previous-buffer)
@@ -218,10 +206,10 @@
 (define-key dsw-comment-map "p" 'evilnc-comment-or-uncomment-paragraphs)
 
 (setq dsw-file-map (make-sparse-keymap))
-(define-key dsw-file-map "f" 'helm-find-files)
+(define-key dsw-file-map "f" 'find-file)
 (define-key dsw-file-map "i" 'dsw-find-user-init-file)
 (define-key dsw-file-map "j" 'dired-jump)
-(define-key dsw-file-map "r" 'helm-recentf)
+(define-key dsw-file-map "r" 'recentf)
 
 (setq dsw-magit-map (make-sparse-keymap))
 (define-key dsw-magit-map "s" 'magit-status)
@@ -234,7 +222,9 @@
 (define-key dsw-jump-map "b" 'xref-pop-marker-stack)
 
 (setq dsw-project-map (make-sparse-keymap))
-(define-key dsw-project-map "f" 'projectile-find-file)
+(define-key dsw-project-map "b" 'project-switch-to-buffer)
+(define-key dsw-project-map "f" 'project-find-file)
+(define-key dsw-project-map "p" 'project-switch-project)
 
 (setq dsw-window-map (make-sparse-keymap))
 (define-key dsw-window-map "d" 'evil-window-delete)
@@ -274,8 +264,9 @@
   "p" (cons "project" dsw-project-map)
   "w" (cons "window" dsw-window-map)
   "y" (cons "fly" dsw-fly-map)
-  "/" (cons "search project" 'helm-projectile-ag)
-  "SPC" (cons "M-x" 'helm-M-x))
+  "/" (cons "search project" 'project-find-regexp)
+  "SPC" (cons "M-x" 'execute-extended-command)
+  )
 
 (put 'dired-find-alternate-file 'disabled nil)
 
