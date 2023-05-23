@@ -268,7 +268,11 @@
   "SPC" (cons "M-x" 'execute-extended-command)
   )
 
+;; Open dired folders in same buffer
 (put 'dired-find-alternate-file 'disabled nil)
+
+;; Copy and move files netween dired buffers
+(setq dired-dwim-target t)
 
 (defun dsw-dired-up-directory ()
   "Take Dired up one directory, but behave like `dired-find-alternate-file`."
