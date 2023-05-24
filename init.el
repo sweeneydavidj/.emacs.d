@@ -15,6 +15,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; (package-refresh-contents)
+
 (eval-when-compile
   (setq use-package-always-ensure t)
   (require 'use-package))
@@ -57,6 +59,8 @@
 ;; Set anyway, but this is actually the default
 (set-frame-font "UbuntuMono-15" nil t)
 
+(recentf-mode 1)
+
 (use-package diminish)
 
 (use-package doom-themes
@@ -90,21 +94,27 @@
   :config
   (yas-global-mode 1))
 
+(use-package vertico
+  :init
+  (vertico-mode))
+
 (use-package corfu
   :custom
   (corfu-auto t)
   :init
   (global-corfu-mode))
 
-(use-package vertico
-  :init
-  (vertico-mode))
+(use-package consult)
 
 (use-package orderless
   :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package marginalia
+  :init
+  (marginalia-mode))
 
 (use-package magit
   :pin melpa-stable
