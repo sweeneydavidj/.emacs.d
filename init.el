@@ -159,18 +159,19 @@
 
 (use-package evil
   :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-search-module 'evil-search)
+  ;; (setq evil-want-integration t)
+  ;; (setq evil-want-keybinding nil)
+  ;; (setq evil-search-module 'evil-search)
   :config
-  (evil-mode 1)
-  (evil-set-undo-system 'undo-redo))
+  ;; (evil-mode 1)
+  ;; (evil-set-undo-system 'undo-redo)
+  )
 
-(use-package evil-collection
-  :after evil
-  :diminish evil-collection-unimpaired-mode
-  :config
-  (evil-collection-init))
+;; (use-package evil-collection
+;;   :after evil
+;;   :diminish evil-collection-unimpaired-mode
+;;   :config
+;;   (evil-collection-init))
 
 (use-package evil-surround
   :config
@@ -229,11 +230,6 @@
 (setq dsw-jump-map (make-sparse-keymap))
 (define-key dsw-jump-map "b" 'xref-pop-marker-stack)
 
-(setq dsw-project-map (make-sparse-keymap))
-(define-key dsw-project-map "b" 'project-switch-to-buffer)
-(define-key dsw-project-map "f" 'project-find-file)
-(define-key dsw-project-map "p" 'project-switch-project)
-
 (setq dsw-window-map (make-sparse-keymap))
 (define-key dsw-window-map "d" 'evil-window-delete)
 (define-key dsw-window-map "m" 'delete-other-windows) ;; maximize
@@ -269,7 +265,6 @@
   "g" (cons "magit" dsw-magit-map)
   "h" (cons "help" dsw-help-map)
   "j" (cons "jump" dsw-jump-map)
-  "p" (cons "project" dsw-project-map)
   "w" (cons "window" dsw-window-map)
   "y" (cons "fly" dsw-fly-map)
   "/" (cons "search project" 'project-find-regexp)
@@ -293,12 +288,32 @@
 ;; https://emacs.stackexchange.com/questions/26450/how-to-remap-to-in-evil-mode
 (with-eval-after-load 'dired
  (evil-define-key 'normal dired-mode-map (kbd "h") 'dsw-dired-up-directory)
- (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file))
+ (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file)
+ (define-key dired-mode-map (kbd "C-<return>") 'dired-find-alternate-file)
+ (define-key dired-mode-map (kbd "C-6") 'dsw-dired-up-directory))
 
 (eval-after-load 'elixir-ts
   (evil-define-key 'normal elixir-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer)))
 
 (eval-after-load 'heex-ts
   (evil-define-key 'normal heex-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer)))
+
+;; http://makble.com/how-to-toggle-evil-mode-in-emacs
+(defun toggle-evil-local-mode ()
+  (interactive)
+  (if (bound-and-true-p evil-local-mode)
+    (progn
+      (turn-off-evil-mode)
+      ;; (set-variable 'cursor-type 'bar)
+    )
+    (progn
+      (turn-on-evil-mode)
+      ;; (set-variable 'cursor-type 'box)
+    )
+  )
+)
+ 
+(global-set-key (kbd "M-u") 'toggle-evil-local-mode)
+;; (add-hook 'elixir-ts-mode-hook 'evil-local-mode)
 
 ;;; init.el ends here
