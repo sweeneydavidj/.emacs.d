@@ -315,5 +315,6 @@
  
 (global-set-key (kbd "M-u") 'toggle-evil-local-mode)
 ;; (add-hook 'elixir-ts-mode-hook 'evil-local-mode)
+(global-set-key (kbd "C-c f") (cons "file"  dsw-file-map))
 
 ;;; init.el ends here
