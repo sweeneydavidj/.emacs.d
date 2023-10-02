@@ -1,4 +1,4 @@
-;;; package --- Some summary
+;;; PACKAGE --- Some summary
 
 ;;; Commentary:
 ;;; some commentary
@@ -19,7 +19,7 @@
   (setq use-package-always-ensure t)
   (require 'use-package))
 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(define-key global-map (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; There are three different functions that tend to clutter the directory tree.
 ;; backup, autosave and file locks
@@ -149,6 +149,15 @@
     (setq web-mode-script-padding 2)
     (setq web-mode-style-padding 2)
     (setq web-mode-block-padding 2))
+
+
+(use-package highlight-indent-guides
+  :config
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-auto-character-face-perc 35)
+  (setq highlight-indent-guides-responsive 'top)
+  (setq highlight-indent-guides-auto-top-character-face-perc 75)
+  )
 
 ;; Make sure Emacs has support for dynamic modules...
 ;; C-h v system-configuration-options
@@ -298,23 +307,27 @@
 (eval-after-load 'heex-ts
   (evil-define-key 'normal heex-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer)))
 
+(setq-default cursor-type 'bar)
 ;; http://makble.com/how-to-toggle-evil-mode-in-emacs
 (defun toggle-evil-local-mode ()
   (interactive)
   (if (bound-and-true-p evil-local-mode)
     (progn
       (turn-off-evil-mode)
-      ;; (set-variable 'cursor-type 'bar)
+      (setq cursor-type 'bar)
     )
     (progn
       (turn-on-evil-mode)
-      ;; (set-variable 'cursor-type 'box)
+      (setq cursor-type 'box)
     )
   )
 )
  
-(global-set-key (kbd "M-u") 'toggle-evil-local-mode)
 ;; (add-hook 'elixir-ts-mode-hook 'evil-local-mode)
-(global-set-key (kbd "C-c f") (cons "file"  dsw-file-map))
+(add-hook 'heex-ts-mode-hook 'evil-local-mode)
+(add-hook 'prog-mode-hook 'evil-local-mode)
 
+(define-key global-map (kbd "M-u") 'toggle-evil-local-mode)
+(define-key global-map (kbd "C-c f") (cons "file"  dsw-file-map))
 ;;; init.el ends here
+(put 'narrow-to-region 'disabled nil)
