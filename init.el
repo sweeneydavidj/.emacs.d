@@ -210,6 +210,10 @@
 
 (define-key evil-motion-state-map (kbd "gb") 'xref-go-back)
 
+;; TODO review the second last comment (from lawlist) and maybe refactor below
+;; Probably good to read elisp chapter on Functions first
+;; https://www.reddit.com/r/emacs/comments/3ytb6n/a_better_way_to_define_a_new_prefix/
+
 (setq dsw-buffer-map (make-sparse-keymap))
 (define-key dsw-buffer-map "b" 'switch-to-buffer)
 (define-key dsw-buffer-map "B" 'switch-to-buffer-other-window)
