@@ -55,7 +55,7 @@
 (load-file custom-file)
 
 ;; Set anyway, but this is actually the default
-(set-frame-font "UbuntuMono-15" nil t)
+(set-frame-font "UbuntuMono-14" nil t)
 
 (recentf-mode 1)
 
@@ -65,7 +65,7 @@
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
@@ -326,12 +326,22 @@
     )
   )
 )
- 
+
 ;; (add-hook 'elixir-ts-mode-hook 'evil-local-mode)
 (add-hook 'heex-ts-mode-hook 'evil-local-mode)
 (add-hook 'prog-mode-hook 'evil-local-mode)
 
 (define-key global-map (kbd "M-u") 'toggle-evil-local-mode)
 (define-key global-map (kbd "C-c f") (cons "file"  dsw-file-map))
-;;; init.el ends here
+
 (put 'narrow-to-region 'disabled nil)
+
+;; https://www.reddit.com/r/emacs/comments/10l40yi/comment/j5usxmr/
+(defun +keyboard-escape-quit-adv (fun)
+"Around advice for `keyboard-escape-quit' FUN.
+ Preserve window configuration when pressing ESC."
+(let ((buffer-quit-function (or buffer-quit-function #'keyboard-quit)))
+  (funcall fun)))
+(advice-add #'keyboard-escape-quit :around #'+keyboard-escape-quit-adv)
+
+;;; init.el ends here
