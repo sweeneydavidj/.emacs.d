@@ -137,10 +137,14 @@
 (require 'eglot)
 (add-hook 'elixir-ts-mode-hook 'eglot-ensure)
 
+(setq major-mode-remap-alist
+      '((python-mode . python-ts-mode)))
+
+(add-hook 'python-ts-mode-hook 'eglot-ensure)
+
 (setq js-indent-level 2)
 
 (use-package web-mode
-  ;; :mode ("\\.heex\\'" . web-mode)
   :config
     (setq web-mode-markup-indent-offset 2)
     (setq web-mode-css-indent-offset 2)
@@ -173,7 +177,7 @@
   ;; (setq evil-search-module 'evil-search)
   :config
   ;; (evil-mode 1)
-  ;; (evil-set-undo-system 'undo-redo)
+  (evil-set-undo-system 'undo-redo)
   )
 
 ;; (use-package evil-collection
@@ -221,6 +225,7 @@
 (define-key dsw-buffer-map "o" 'mode-line-other-buffer)
 (define-key dsw-buffer-map "p" 'previous-buffer)
 (define-key dsw-buffer-map "d" 'kill-current-buffer)
+(define-key dsw-buffer-map "k" 'kill-buffer)
 (define-key dsw-buffer-map "s" 'dsw-switch-scratch-bufer)
 
 (setq dsw-comment-map (make-sparse-keymap))
@@ -243,15 +248,19 @@
 (setq dsw-jump-map (make-sparse-keymap))
 (define-key dsw-jump-map "b" 'xref-pop-marker-stack)
 
+(setq dsw-project-map (make-sparse-keymap))
+(define-key dsw-project-map "f" 'project-find-file)
+
 (setq dsw-window-map (make-sparse-keymap))
-(define-key dsw-window-map "d" 'evil-window-delete)
+(define-key dsw-window-map "e" 'balance-windows)
+(define-key dsw-window-map "d" 'delete-window)
 (define-key dsw-window-map "m" 'delete-other-windows) ;; maximize
 (define-key dsw-window-map "h" 'evil-window-left)
 (define-key dsw-window-map "l" 'evil-window-right)
 (define-key dsw-window-map "j" 'evil-window-down)
 (define-key dsw-window-map "k" 'evil-window-up)
-(define-key dsw-window-map "s" 'evil-window-split)
-(define-key dsw-window-map "v" 'evil-window-vsplit)
+(define-key dsw-window-map "s" 'split-window-below)
+(define-key dsw-window-map "v" 'split-window-right)
 
 (setq dsw-fly-map (make-sparse-keymap))
 (define-key dsw-fly-map "b" 'flymake-show-buffer-diagnostics)
@@ -261,8 +270,8 @@
 
 (bind-map dsw-base-leader-map
   :keys ("C-SPC")
-  :evil-keys ("SPC")
-  :evil-states (normal motion visual)
+  ;; :evil-keys ("SPC")
+  ;; :evil-states (normal motion visual)
   :override-minor-modes t)
 
 ;; See the Keymaps hierarchy guide here...
@@ -278,6 +287,7 @@
   "g" (cons "magit" dsw-magit-map)
   "h" (cons "help" dsw-help-map)
   "j" (cons "jump" dsw-jump-map)
+  "p" (cons "project" dsw-project-map)
   "w" (cons "window" dsw-window-map)
   "y" (cons "fly" dsw-fly-map)
   "/" (cons "search project" 'project-find-regexp)
