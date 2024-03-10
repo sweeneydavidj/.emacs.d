@@ -142,6 +142,8 @@
 
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 
+(require 'yaml-ts-mode)
+
 (setq js-indent-level 2)
 
 (use-package web-mode
