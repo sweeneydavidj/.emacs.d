@@ -342,6 +342,7 @@
 ;; (add-hook 'elixir-ts-mode-hook 'evil-local-mode)
 (add-hook 'heex-ts-mode-hook 'evil-local-mode)
 (add-hook 'prog-mode-hook 'evil-local-mode)
+(add-hook 'markdown-mode-hook 'evil-local-mode)
 
 (define-key global-map (kbd "M-u") 'toggle-evil-local-mode)
 (define-key global-map (kbd "C-c f") (cons "file"  dsw-file-map))
