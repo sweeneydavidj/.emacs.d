@@ -42,11 +42,10 @@
 ;; then reload changed buffers
 (global-auto-revert-mode 1)
 
-;; https://github.com/syl20bnr/spacemacs/issues/5070
-(setq-default evil-kill-on-visual-paste nil)
-
 (setq scroll-conservatively 101)
 (setq scroll-margin 3)
+(setq isearch-lazy-count t)
+(setq isearch-lazy-highlight t)
 (setq column-number-mode t)
 (setq recentf-max-saved-items 100)
 (setq-default indent-tabs-mode nil)
@@ -156,51 +155,15 @@
     (setq web-mode-style-padding 2)
     (setq web-mode-block-padding 2))
 
-
 (use-package highlight-indent-guides
   :config
   (setq highlight-indent-guides-method 'character)
   (setq highlight-indent-guides-auto-character-face-perc 35)
   (setq highlight-indent-guides-responsive 'top)
-  (setq highlight-indent-guides-auto-top-character-face-perc 75)
-  )
-
-;; Make sure Emacs has support for dynamic modules...
-;; C-h v system-configuration-options
-;; value should include --with-modules
-;; Install necessary packages...
-;; sudo apt install cmake libtool libtool-bin
-;; (use-package vterm)
-
-(use-package evil
-  :init
-  ;; (setq evil-want-integration t)
-  ;; (setq evil-want-keybinding nil)
-  ;; (setq evil-search-module 'evil-search)
-  :config
-  ;; (evil-mode 1)
-  (evil-set-undo-system 'undo-redo)
-  )
-
-;; (use-package evil-collection
-;;   :after evil
-;;   :diminish evil-collection-unimpaired-mode
-;;   :config
-;;   (evil-collection-init))
-
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-exchange
-  :config
-  (evil-exchange-install))
+  (setq highlight-indent-guides-auto-top-character-face-perc 75))
 
 (use-package evil-nerd-commenter)
 
-;; Adapted from spacemacs funcs.el
-;; which was adapted from...
-;; https://emacsredux.com/blog/2013/05/18/instant-access-to-init-dot-el/
 (defun dsw-find-user-init-file ()
   "Edit the User's init file in the current window."
   (interactive)
@@ -210,15 +173,6 @@
   "Edit the User's init file in the current window."
   (interactive)
   (switch-to-buffer "*scratch*"))
-
-(define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-(define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-
-(define-key evil-motion-state-map (kbd "gb") 'xref-go-back)
-
-;; TODO review the second last comment (from lawlist) and maybe refactor below
-;; Probably good to read elisp chapter on Functions first
-;; https://www.reddit.com/r/emacs/comments/3ytb6n/a_better_way_to_define_a_new_prefix/
 
 (setq dsw-buffer-map (make-sparse-keymap))
 (define-key dsw-buffer-map "b" 'switch-to-buffer)
@@ -250,51 +204,16 @@
 (setq dsw-jump-map (make-sparse-keymap))
 (define-key dsw-jump-map "b" 'xref-pop-marker-stack)
 
-(setq dsw-project-map (make-sparse-keymap))
-(define-key dsw-project-map "f" 'project-find-file)
-
 (setq dsw-window-map (make-sparse-keymap))
 (define-key dsw-window-map "e" 'balance-windows)
 (define-key dsw-window-map "d" 'delete-window)
 (define-key dsw-window-map "m" 'delete-other-windows) ;; maximize
-(define-key dsw-window-map "h" 'evil-window-left)
-(define-key dsw-window-map "l" 'evil-window-right)
-(define-key dsw-window-map "j" 'evil-window-down)
-(define-key dsw-window-map "k" 'evil-window-up)
 (define-key dsw-window-map "s" 'split-window-below)
 (define-key dsw-window-map "v" 'split-window-right)
 
 (setq dsw-fly-map (make-sparse-keymap))
 (define-key dsw-fly-map "b" 'flymake-show-buffer-diagnostics)
 (define-key dsw-fly-map "p" 'flymake-show-project-diagnostics)
-
-(use-package bind-map)
-
-(bind-map dsw-base-leader-map
-  :keys ("C-SPC")
-  ;; :evil-keys ("SPC")
-  ;; :evil-states (normal motion visual)
-  :override-minor-modes t)
-
-;; See the Keymaps hierarchy guide here...
-;; https://github.com/syl20bnr/spacemacs/wiki/Keymaps-guide
-;;
-;; In order to get the prefix key text in which-key see
-;; https://github.com/justbur/emacs-which-key#keymap-based-replacement
-
-(bind-map-set-keys dsw-base-leader-map
-  "b" (cons "buffer" dsw-buffer-map)
-  "c" (cons "comment" dsw-comment-map)
-  "f" (cons "file" dsw-file-map)
-  "g" (cons "magit" dsw-magit-map)
-  "h" (cons "help" dsw-help-map)
-  "j" (cons "jump" dsw-jump-map)
-  "p" (cons "project" dsw-project-map)
-  "w" (cons "window" dsw-window-map)
-  "y" (cons "fly" dsw-fly-map)
-  "/" (cons "search project" 'project-find-regexp)
-  "SPC" (cons "M-x" 'execute-extended-command)
-  )
 
 ;; Open dired folders in same buffer
 (put 'dired-find-alternate-file 'disabled nil)
@@ -309,43 +228,18 @@
     (dired-up-directory)
     (kill-buffer old)))
 
-;; For inspiration see the answer here...
-;; https://emacs.stackexchange.com/questions/26450/how-to-remap-to-in-evil-mode
 (with-eval-after-load 'dired
- (evil-define-key 'normal dired-mode-map (kbd "h") 'dsw-dired-up-directory)
- (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-alternate-file)
- (define-key dired-mode-map (kbd "C-<return>") 'dired-find-alternate-file)
  (define-key dired-mode-map (kbd "C-6") 'dsw-dired-up-directory))
 
-(eval-after-load 'elixir-ts
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer)))
-
-(eval-after-load 'heex-ts
-  (evil-define-key 'normal heex-ts-mode-map (kbd "SPC =") (cons "format" 'eglot-format-buffer)))
-
-(setq-default cursor-type 'bar)
-;; http://makble.com/how-to-toggle-evil-mode-in-emacs
-(defun toggle-evil-local-mode ()
-  (interactive)
-  (if (bound-and-true-p evil-local-mode)
-    (progn
-      (turn-off-evil-mode)
-      (setq cursor-type 'bar)
-    )
-    (progn
-      (turn-on-evil-mode)
-      (setq cursor-type 'box)
-    )
-  )
-)
-
-;; (add-hook 'elixir-ts-mode-hook 'evil-local-mode)
-(add-hook 'heex-ts-mode-hook 'evil-local-mode)
-(add-hook 'prog-mode-hook 'evil-local-mode)
-(add-hook 'markdown-mode-hook 'evil-local-mode)
-
-(define-key global-map (kbd "M-u") 'toggle-evil-local-mode)
-(define-key global-map (kbd "C-c f") (cons "file"  dsw-file-map))
+(define-key global-map (kbd "C-c b") (cons "buffer" dsw-buffer-map))
+(define-key global-map (kbd "C-c c") (cons "comment" dsw-comment-map))
+(define-key global-map (kbd "C-c f") (cons "file" dsw-file-map))
+(define-key global-map (kbd "C-c g") (cons "magit" dsw-magit-map))
+(define-key global-map (kbd "C-c h") (cons "help" dsw-help-map))
+(define-key global-map (kbd "C-c j") (cons "jump" dsw-jump-map))
+(define-key global-map (kbd "C-c w") (cons "window" dsw-window-map))
+(define-key global-map (kbd "C-c y") (cons "fly" dsw-fly-map))
+(define-key global-map (kbd "C-c /") (cons "search project" 'project-find-regexp))
 
 (put 'narrow-to-region 'disabled nil)
 
