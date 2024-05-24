@@ -87,6 +87,9 @@
   :config
   (setq markdown-command "pandoc"))
 
+;; https://www.masteringemacs.org/article/text-expansion-hippie-expand
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
+
 (use-package yasnippet
   :config
   (yas-global-mode 1))
