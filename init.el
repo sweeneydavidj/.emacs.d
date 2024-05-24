@@ -90,6 +90,9 @@
 ;; https://www.masteringemacs.org/article/text-expansion-hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
+(use-package avy)
+(global-set-key (kbd "C-;") 'avy-goto-char-timer)
+
 (use-package yasnippet
   :config
   (yas-global-mode 1))
