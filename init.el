@@ -49,6 +49,9 @@
 (setq column-number-mode t)
 (setq recentf-max-saved-items 100)
 (setq-default indent-tabs-mode nil)
+(setq help-window-select t)
+(setq set-mark-command-repeat-pop t)
+(setq bookmark-save-flag 1)
 
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
@@ -57,6 +60,9 @@
 (set-frame-font "UbuntuMono-14" nil t)
 
 (recentf-mode 1)
+
+(setq savehist-additional-variables '(register-alist))
+(savehist-mode 1)
 
 (use-package diminish)
 
@@ -171,12 +177,12 @@
 (use-package evil-nerd-commenter)
 
 (defun dsw-find-user-init-file ()
-  "Edit the User's init file in the current window."
+  "Open the User's init file in the current window."
   (interactive)
   (find-file-existing user-init-file))
 
 (defun dsw-switch-scratch-bufer ()
-  "Edit the User's init file in the current window."
+  "Open the scatch buffer in the current window."
   (interactive)
   (switch-to-buffer "*scratch*"))
 
@@ -195,9 +201,7 @@
 (define-key dsw-comment-map "p" 'evilnc-comment-or-uncomment-paragraphs)
 
 (setq dsw-file-map (make-sparse-keymap))
-(define-key dsw-file-map "f" 'find-file)
 (define-key dsw-file-map "i" 'dsw-find-user-init-file)
-(define-key dsw-file-map "j" 'dired-jump)
 (define-key dsw-file-map "r" 'recentf)
 
 (setq dsw-magit-map (make-sparse-keymap))
