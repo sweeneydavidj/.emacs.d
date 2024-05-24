@@ -249,12 +249,4 @@
 
 (put 'narrow-to-region 'disabled nil)
 
-;; https://www.reddit.com/r/emacs/comments/10l40yi/comment/j5usxmr/
-(defun +keyboard-escape-quit-adv (fun)
-"Around advice for `keyboard-escape-quit' FUN.
- Preserve window configuration when pressing ESC."
-(let ((buffer-quit-function (or buffer-quit-function #'keyboard-quit)))
-  (funcall fun)))
-(advice-add #'keyboard-escape-quit :around #'+keyboard-escape-quit-adv)
-
 ;;; init.el ends here
