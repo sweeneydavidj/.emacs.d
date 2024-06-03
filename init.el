@@ -52,6 +52,12 @@
 (setq help-window-select t)
 (setq set-mark-command-repeat-pop t)
 (setq bookmark-save-flag 1)
+;; Copy and move files netween dired buffers
+(setq dired-dwim-target t)
+
+;; Open dired folders in same buffer
+(put 'dired-find-alternate-file 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
 
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
@@ -176,6 +182,14 @@
 
 (use-package evil-nerd-commenter)
 
+(defun dsw-copy-line ()
+  "Copy the current line"
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line 1)
+  (yank)
+  (previous-line))
+
 (defun dsw-find-user-init-file ()
   "Open the User's init file in the current window."
   (interactive)
@@ -185,6 +199,16 @@
   "Open the scatch buffer in the current window."
   (interactive)
   (switch-to-buffer "*scratch*"))
+
+(defun dsw-dired-up-directory ()
+  "Take Dired up one directory, but behave like `dired-find-alternate-file`."
+  (interactive)
+  (let ((old (current-buffer)))
+    (dired-up-directory)
+    (kill-buffer old)))
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "C-6") 'dsw-dired-up-directory))
 
 (setq dsw-buffer-map (make-sparse-keymap))
 (define-key dsw-buffer-map "b" 'switch-to-buffer)
@@ -203,6 +227,9 @@
 (setq dsw-file-map (make-sparse-keymap))
 (define-key dsw-file-map "i" 'dsw-find-user-init-file)
 (define-key dsw-file-map "r" 'recentf)
+
+(setq dsw-kill-map (make-sparse-keymap))
+(define-key dsw-kill-map "w" 'dsw-copy-line)
 
 (setq dsw-magit-map (make-sparse-keymap))
 (define-key dsw-magit-map "s" 'magit-status)
@@ -225,32 +252,14 @@
 (define-key dsw-fly-map "b" 'flymake-show-buffer-diagnostics)
 (define-key dsw-fly-map "p" 'flymake-show-project-diagnostics)
 
-;; Open dired folders in same buffer
-(put 'dired-find-alternate-file 'disabled nil)
-
-;; Copy and move files netween dired buffers
-(setq dired-dwim-target t)
-
-(defun dsw-dired-up-directory ()
-  "Take Dired up one directory, but behave like `dired-find-alternate-file`."
-  (interactive)
-  (let ((old (current-buffer)))
-    (dired-up-directory)
-    (kill-buffer old)))
-
-(with-eval-after-load 'dired
- (define-key dired-mode-map (kbd "C-6") 'dsw-dired-up-directory))
-
 (define-key global-map (kbd "C-c b") (cons "buffer" dsw-buffer-map))
 (define-key global-map (kbd "C-c c") (cons "comment" dsw-comment-map))
 (define-key global-map (kbd "C-c f") (cons "file" dsw-file-map))
+(define-key global-map (kbd "C-c k") (cons "kill" dsw-kill-map))
 (define-key global-map (kbd "C-c g") (cons "magit" dsw-magit-map))
 (define-key global-map (kbd "C-c h") (cons "help" dsw-help-map))
 (define-key global-map (kbd "C-c j") (cons "jump" dsw-jump-map))
 (define-key global-map (kbd "C-c w") (cons "window" dsw-window-map))
 (define-key global-map (kbd "C-c y") (cons "fly" dsw-fly-map))
-(define-key global-map (kbd "C-c /") (cons "search project" 'project-find-regexp))
-
-(put 'narrow-to-region 'disabled nil)
 
 ;;; init.el ends here
