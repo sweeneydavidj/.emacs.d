@@ -203,9 +203,7 @@
 (defun dsw-dired-up-directory ()
   "Take Dired up one directory, but behave like `dired-find-alternate-file`."
   (interactive)
-  (let ((old (current-buffer)))
-    (dired-up-directory)
-    (kill-buffer old)))
+  (find-alternate-file ".."))
 
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-6") 'dsw-dired-up-directory))
