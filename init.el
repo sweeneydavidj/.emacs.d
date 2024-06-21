@@ -94,6 +94,8 @@
   :config
   (setq which-key-idle-delay 0.3))
 
+(use-package keycast)
+
 (use-package markdown-mode
   :mode ("\\.md\\'" . markdown-mode)
   :config
