@@ -42,6 +42,8 @@
 ;; then reload changed buffers
 (global-auto-revert-mode 1)
 
+(winner-mode 1)
+
 (setq scroll-conservatively 101)
 (setq scroll-margin 3)
 (setq isearch-lazy-count t)
@@ -245,7 +247,9 @@
 (define-key dsw-window-map "e" 'balance-windows)
 (define-key dsw-window-map "d" 'delete-window)
 (define-key dsw-window-map "m" 'delete-other-windows) ;; maximize
+(define-key dsw-window-map "r" 'winner-redo)
 (define-key dsw-window-map "s" 'split-window-below)
+(define-key dsw-window-map "u" 'winner-undo)
 (define-key dsw-window-map "v" 'split-window-right)
 
 (setq dsw-fly-map (make-sparse-keymap))
