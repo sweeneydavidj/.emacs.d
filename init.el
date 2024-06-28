@@ -19,8 +19,6 @@
   (setq use-package-always-ensure t)
   (require 'use-package))
 
-(define-key global-map (kbd "<escape>") 'keyboard-escape-quit)
-
 ;; There are three different functions that tend to clutter the directory tree.
 ;; backup, autosave and file locks
 ;; We keep the functionality but just move them out of the way.
