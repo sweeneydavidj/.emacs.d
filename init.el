@@ -184,6 +184,9 @@
 
 (use-package evil-nerd-commenter)
 
+(use-package ox-hugo
+  :after ox)
+
 (defun dsw-copy-line ()
   "Copy the current line"
   (interactive)
