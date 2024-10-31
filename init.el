@@ -104,9 +104,6 @@
 ;; https://www.masteringemacs.org/article/text-expansion-hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
-(use-package avy)
-(global-set-key (kbd "C-;") 'avy-goto-char-timer)
-
 (use-package yasnippet
   :config
   (yas-global-mode 1))
@@ -139,10 +136,14 @@
   (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
   (setq magit-bury-buffer-function 'magit-restore-window-configuration))
 
-(use-package smartparens
-  :diminish smartparens-mode
-  :config
-  (smartparens-global-mode))
+(use-package expreg
+  :bind(
+        ("C-'" . expreg-expand)
+        ("C-\"" . expreg-contract)))
+
+(use-package jump-char
+  :bind(
+        "C-;" . jump-char-forward))
 
 (require 'treesit)
 (require 'heex-ts-mode)
