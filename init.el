@@ -43,6 +43,7 @@
 (repeat-mode 1)
 (winner-mode 1)
 
+(setq-default cursor-type 'bar)
 (setq scroll-conservatively 101)
 (setq scroll-margin 3)
 (setq isearch-lazy-count t)
