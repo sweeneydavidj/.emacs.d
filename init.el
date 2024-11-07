@@ -40,6 +40,7 @@
 ;; then reload changed buffers
 (global-auto-revert-mode 1)
 
+(repeat-mode 1)
 (winner-mode 1)
 
 (setq scroll-conservatively 101)
