@@ -191,14 +191,6 @@
 (use-package ox-hugo
   :after ox)
 
-(defun dsw-copy-line ()
-  "Copy the current line"
-  (interactive)
-  (move-beginning-of-line 1)
-  (kill-line 1)
-  (yank)
-  (previous-line))
-
 (defun dsw-find-user-init-file ()
   "Open the User's init file in the current window."
   (interactive)
@@ -215,65 +207,54 @@
   (find-alternate-file ".."))
 
 (with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-6") 'dsw-dired-up-directory))
+  (keymap-set dired-mode-map "^" #'dsw-dired-up-directory))
 
-(setq dsw-buffer-map (make-sparse-keymap))
-(define-key dsw-buffer-map "b" 'switch-to-buffer)
-(define-key dsw-buffer-map "B" 'switch-to-buffer-other-window)
-(define-key dsw-buffer-map "n" 'next-buffer)
-(define-key dsw-buffer-map "o" 'mode-line-other-buffer)
-(define-key dsw-buffer-map "p" 'previous-buffer)
-(define-key dsw-buffer-map "d" 'kill-current-buffer)
-(define-key dsw-buffer-map "k" 'kill-buffer)
-(define-key dsw-buffer-map "s" 'dsw-switch-scratch-bufer)
+(defvar-keymap dsw-buffer-map
+  "B" #'switch-to-buffer-other-window
+  "n" #'next-buffer
+  "p" #'previous-buffer
+  "d" #'kill-current-buffer
+  "s" #'dsw-switch-scratch-bufer)
 
-(setq dsw-comment-map (make-sparse-keymap))
-(define-key dsw-comment-map "l" 'evilnc-comment-or-uncomment-lines)
-(define-key dsw-comment-map "p" 'evilnc-comment-or-uncomment-paragraphs)
+(defvar-keymap dsw-comment-map
+  "l" #'evilnc-comment-or-uncomment-lines
+  "p" #'evilnc-comment-or-uncomment-paragraphs)
 
-(setq dsw-file-map (make-sparse-keymap))
-(define-key dsw-file-map "i" 'dsw-find-user-init-file)
-(define-key dsw-file-map "r" 'recentf)
+(defvar-keymap dsw-file-map
+  "i" #'dsw-find-user-init-file
+  "r" #'recentf)
 
-(setq dsw-kill-map (make-sparse-keymap))
-(define-key dsw-kill-map "w" 'dsw-copy-line)
+(defvar-keymap dsw-magit-map
+  "s" #'magit-status)
 
-(setq dsw-magit-map (make-sparse-keymap))
-(define-key dsw-magit-map "s" 'magit-status)
+(defvar-keymap dsw-help-map
+  "l" #'find-library
+  "h" #'eldoc)
 
-(setq dsw-help-map (make-sparse-keymap))
-(define-key dsw-help-map "l" 'find-library)
-(define-key dsw-help-map "h" 'eldoc)
+(defvar-keymap dsw-window-map
+  "e" #'balance-windows
+  "d" #'delete-window
+  "r" #'winner-redo
+  "u" #'winner-undo
+  "h" #'windmove-left
+  "j" #'windmove-down
+  "k" #'windmove-up
+  "l" #'windmove-right
+  "H" #'windmove-swap-states-left
+  "J" #'windmove-swap-states-down
+  "K" #'windmove-swap-states-up
+  "L" #'windmove-swap-states-right)
 
-(setq dsw-jump-map (make-sparse-keymap))
-(define-key dsw-jump-map "b" 'xref-pop-marker-stack)
+(defvar-keymap dsw-fly-map
+  "b" #'flymake-show-buffer-diagnostics
+  "p" #'flymake-show-project-diagnostics)
 
-(setq dsw-window-map (make-sparse-keymap))
-(define-key dsw-window-map "e" 'balance-windows)
-(define-key dsw-window-map "d" 'delete-window)
-(define-key dsw-window-map "r" 'winner-redo)
-(define-key dsw-window-map "u" 'winner-undo)
-(define-key dsw-window-map "h" 'windmove-left)
-(define-key dsw-window-map "j" 'windmove-down)
-(define-key dsw-window-map "k" 'windmove-up)
-(define-key dsw-window-map "l" 'windmove-right)
-(define-key dsw-window-map "H" 'windmove-swap-states-left)
-(define-key dsw-window-map "J" 'windmove-swap-states-down)
-(define-key dsw-window-map "K" 'windmove-swap-states-up)
-(define-key dsw-window-map "L" 'windmove-swap-states-right)
-
-(setq dsw-fly-map (make-sparse-keymap))
-(define-key dsw-fly-map "b" 'flymake-show-buffer-diagnostics)
-(define-key dsw-fly-map "p" 'flymake-show-project-diagnostics)
-
-(define-key global-map (kbd "C-c b") (cons "buffer" dsw-buffer-map))
-(define-key global-map (kbd "C-c c") (cons "comment" dsw-comment-map))
-(define-key global-map (kbd "C-c f") (cons "file" dsw-file-map))
-(define-key global-map (kbd "C-c k") (cons "kill" dsw-kill-map))
-(define-key global-map (kbd "C-c g") (cons "magit" dsw-magit-map))
-(define-key global-map (kbd "C-c h") (cons "help" dsw-help-map))
-(define-key global-map (kbd "C-c j") (cons "jump" dsw-jump-map))
-(define-key global-map (kbd "C-c w") (cons "window" dsw-window-map))
-(define-key global-map (kbd "C-c y") (cons "fly" dsw-fly-map))
+(keymap-global-set "C-c b" (cons "buffer" dsw-buffer-map))
+(keymap-global-set "C-c c" (cons "comment" dsw-comment-map))
+(keymap-global-set "C-c f" (cons "file" dsw-file-map))
+(keymap-global-set "C-c g" (cons "magit" dsw-magit-map))
+(keymap-global-set "C-c h" (cons "help" dsw-help-map))
+(keymap-global-set "C-c w" (cons "window" dsw-window-map))
+(keymap-global-set "C-c y" (cons "fly" dsw-fly-map))
 
 ;;; init.el ends here
