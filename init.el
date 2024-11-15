@@ -34,6 +34,8 @@
 (global-auto-revert-mode 1)
 
 (repeat-mode 1)
+(setq repeat-exit-timeout 3)
+
 (winner-mode 1)
 
 (setq-default cursor-type 'bar)
@@ -224,8 +226,12 @@
   "i" #'dsw-find-user-init-file
   "r" #'recentf)
 
-(defvar-keymap dsw-magit-map
-  "s" #'magit-status)
+(defvar-keymap dsw-git-map
+  :repeat (:enter (git-gutter:next-hunk git-gutter:previous-hunk) :exit (magit-status))
+  "n" #'git-gutter:next-hunk
+  "p" #'git-gutter:previous-hunk
+  "s" #'magit-status
+  )
 
 (defvar-keymap dsw-help-map
   "l" #'find-library
@@ -252,7 +258,7 @@
 (keymap-global-set "C-c b" (cons "buffer" dsw-buffer-map))
 (keymap-global-set "C-c c" (cons "comment" dsw-comment-map))
 (keymap-global-set "C-c f" (cons "file" dsw-file-map))
-(keymap-global-set "C-c g" (cons "magit" dsw-magit-map))
+(keymap-global-set "C-c g" (cons "git" dsw-git-map))
 (keymap-global-set "C-c h" (cons "help" dsw-help-map))
 (keymap-global-set "C-c w" (cons "window" dsw-window-map))
 (keymap-global-set "C-c y" (cons "fly" dsw-fly-map))
