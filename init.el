@@ -178,6 +178,14 @@
   (setq highlight-indent-guides-responsive 'top)
   (setq highlight-indent-guides-auto-top-character-face-perc 75))
 
+(use-package git-gutter
+  :hook (prog-mode . git-gutter-mode)
+  :config
+  (setq git-gutter:update-interval 0.5)
+  (setq git-gutter:added-sign "|")
+  (setq git-gutter:modified-sign "|")
+  (setq git-gutter:lighter " GG"))
+
 (use-package evil-nerd-commenter)
 
 (use-package ox-hugo
