@@ -128,6 +128,7 @@
 
 (use-package magit
   :pin melpa-stable
+  :bind ("C-x g" . magit-status)
   :config
   (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
   (setq magit-bury-buffer-function 'magit-restore-window-configuration))
@@ -241,10 +242,9 @@
   "r" #'recentf)
 
 (defvar-keymap dsw-git-map
-  :repeat (:enter (git-gutter:next-hunk git-gutter:previous-hunk) :exit (magit-status))
+  :repeat (:enter (git-gutter:next-hunk git-gutter:previous-hunk))
   "n" #'git-gutter:next-hunk
   "p" #'git-gutter:previous-hunk
-  "s" #'magit-status
   )
 
 (defvar-keymap dsw-help-map
