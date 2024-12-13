@@ -49,7 +49,7 @@
 (setq help-window-select t)
 (setq set-mark-command-repeat-pop t)
 (setq bookmark-save-flag 1)
-;; Copy and move files netween dired buffers
+;; Copy and move files between dired buffers
 (setq dired-dwim-target t)
 
 ;; Open dired folders in same buffer
@@ -59,8 +59,7 @@
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
 
-;; Set anyway, but this is actually the default
-(set-frame-font "UbuntuMono-14" nil t)
+(setq default-frame-alist '((font . "UbuntuMono-14")))
 
 (recentf-mode 1)
 
