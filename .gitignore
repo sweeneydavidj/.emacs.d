@@ -10,3 +10,10 @@ recentf
 tree-sitter/
 transient/
 tramp
+/.emacs.desktop
+/.org-id-locations
+/eshell/
+/tutorial/
+/url/
+/bookmarks
+/history
