@@ -5,12 +5,11 @@
 
 ;;; Code:
 
+(require 'use-package)
+(setq use-package-always-ensure t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 ;; (package-refresh-contents)
-
-(eval-when-compile
-  (setq use-package-always-ensure t)
-  (require 'use-package))
 
 ;; There are three different functions that tend to clutter the directory tree.
 ;; backup, autosave and file locks
