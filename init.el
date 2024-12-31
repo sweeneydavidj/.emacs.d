@@ -159,16 +159,6 @@
 
 (setq js-indent-level 2)
 
-(use-package web-mode
-  :config
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
-    (setq web-mode-indent-style 2)
-    (setq web-mode-script-padding 2)
-    (setq web-mode-style-padding 2)
-    (setq web-mode-block-padding 2))
-
 (use-package highlight-indent-guides
   :config
   (setq highlight-indent-guides-method 'character)
