@@ -28,9 +28,6 @@
 
 (global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
-;; When format or update from Git outside of Emacs
-;; then reload changed buffers
-(global-auto-revert-mode 1)
 
 (repeat-mode 1)
 (setq repeat-exit-timeout 3)
