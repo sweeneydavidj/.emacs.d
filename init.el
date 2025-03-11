@@ -192,12 +192,12 @@
   (let ((default-directory (vc-root-dir)))
     (async-shell-command "mix format")))
 
-(defun dsw-after-save-actions()
-  (cond ((or (eq major-mode 'elixir-ts-mode)
-             (eq major-mode 'heex-ts-mode))
-         (dsw-mix-format))))
+;; (defun dsw-after-save-actions()
+;;   (cond ((or (eq major-mode 'elixir-ts-mode)
+;;              (eq major-mode 'heex-ts-mode))
+;;          (dsw-mix-format))))
 
-(add-hook 'after-save-hook 'dsw-after-save-actions)
+;; (add-hook 'after-save-hook 'dsw-after-save-actions)
 
 (defun dsw-find-user-init-file ()
   "Open the User's init file in the current window."
