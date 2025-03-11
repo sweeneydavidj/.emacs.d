@@ -159,6 +159,9 @@
 
 (require 'yaml-ts-mode)
 
+;; https://github.com/camdencheek/tree-sitter-dockerfile
+(require 'dockerfile-ts-mode)
+
 (setq js-indent-level 2)
 
 (use-package highlight-indent-guides
