@@ -269,4 +269,7 @@
 (keymap-global-set "C-c w" (cons "window" dsw-window-map))
 (keymap-global-set "C-c y" (cons "fly" dsw-fly-map))
 
+(setq frame-title-format
+      `(buffer-file-name "%f" "%b"))
+
 ;;; init.el ends here
