@@ -60,6 +60,7 @@
 (setq default-frame-alist '((font . "UbuntuMono-14")))
 
 (recentf-mode 1)
+(delete-selection-mode 1)
 
 (setq savehist-additional-variables '(register-alist))
 (savehist-mode 1)
