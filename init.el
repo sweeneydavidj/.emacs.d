@@ -57,8 +57,7 @@
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
 
-;; (setq default-frame-alist '((font . "UbuntuMono-14")))
-(set-face-attribute 'default nil :height 150)
+(set-face-attribute 'default nil :height 135)
 
 (recentf-mode 1)
 (delete-selection-mode 1)
