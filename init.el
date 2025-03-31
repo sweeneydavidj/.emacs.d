@@ -25,7 +25,7 @@
 
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 
-(scroll-bar-mode -1)
+(scroll-bar-mode 1)
 (tool-bar-mode -1)
 
 (global-display-line-numbers-mode 1)
