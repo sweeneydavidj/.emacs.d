@@ -53,6 +53,7 @@
 ;; Open dired folders in same buffer
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
 
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
