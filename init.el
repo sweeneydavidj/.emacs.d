@@ -142,6 +142,10 @@
   :bind(
         "C-;" . jump-char-forward))
 
+(use-package eat)
+(add-hook 'eshell-load-hook #'eat-eshell-mode)
+(add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
+
 (require 'treesit)
 (require 'heex-ts-mode)
 (require 'elixir-ts-mode)
