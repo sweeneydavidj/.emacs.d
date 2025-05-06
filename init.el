@@ -58,6 +58,13 @@
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
 
+(setq sql-connection-alist
+      '((marko_dev (sql-product 'postgres)
+                   (sql-user "postgres")
+                   (sql-server "localhost")
+                   (sql-database "localhost")
+                   (sql-database "postgres://postgres:postgres@localhost/marko_dev"))))
+
 (set-face-attribute 'default nil :height 135)
 
 (recentf-mode 1)
