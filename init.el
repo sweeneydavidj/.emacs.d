@@ -142,12 +142,8 @@
 
 (use-package expreg
   :bind(
-        ("C-'" . expreg-expand)
-        ("C-\"" . expreg-contract)))
-
-(use-package jump-char
-  :bind(
-        "C-;" . jump-char-forward))
+        ("C-;" . expreg-expand)
+        ("C-:" . expreg-contract)))
 
 (use-package eat)
 (add-hook 'eshell-load-hook #'eat-eshell-mode)
@@ -282,6 +278,6 @@
 (keymap-global-set "C-c y" (cons "fly" dsw-fly-map))
 
 (setq frame-title-format
-      `(buffer-file-name "%f" "%b"))
+      '(buffer-file-name "%f" "%b"))
 
 ;;; init.el ends here
