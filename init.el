@@ -122,7 +122,6 @@
   (global-corfu-mode))
 
 (use-package orderless
-  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
@@ -144,6 +143,12 @@
   :bind(
         ("C-;" . expreg-expand)
         ("C-:" . expreg-contract)))
+
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-'") nil))
+
+(use-package surround
+  :bind-keymap ("C-'" . surround-keymap))
 
 (use-package eat)
 (add-hook 'eshell-load-hook #'eat-eshell-mode)
