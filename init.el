@@ -198,6 +198,21 @@
 (use-package ox-hugo
   :after ox)
 
+;; And add to ~/.authinfo.gpg
+;; machine api.anthropic.com password your-api-key-here
+(use-package gptel
+  :ensure t
+  :config
+  (setq gptel-backend
+        (gptel-make-anthropic "Claude"
+          :stream t
+          :key (auth-source-pick-first-password :host "api.anthropic.com")
+          :host "api.anthropic.com"
+          :protocol "https"
+          :endpoint "/v1/messages"
+        ))
+  (setq gptel-model 'claude-3-opus-20240229))
+
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
 
 (defun dsw-mix-format()
