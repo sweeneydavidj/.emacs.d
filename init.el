@@ -36,7 +36,6 @@
 
 (winner-mode 1)
 
-(setq-default cursor-type 'bar)
 (setq scroll-conservatively 101)
 (setq scroll-margin 3)
 (setq isearch-lazy-count t)
@@ -299,5 +298,28 @@
 
 (setq frame-title-format
       '(buffer-file-name "%f" "%b"))
+
+(use-package pulsar
+  :config
+  (pulsar-global-mode)
+  (setq pulsar-pulse-functions
+        '(recenter-top-bottom
+          move-to-window-line-top-bottom
+          reposition-window
+          bookmark-jump
+          other-window
+          delete-window
+          delete-other-windows
+          forward-page
+          backward-page
+          scroll-up-command
+          scroll-down-command
+          windmove-right
+          windmove-left
+          windmove-up
+          windmove-down
+          xref-goto-xref
+          xref-find-definitions
+          xref-pop-marker-stack)))
 
 ;;; init.el ends here
