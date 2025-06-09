@@ -325,4 +325,6 @@
           xref-find-definitions
           xref-pop-marker-stack)))
 
+(use-package nov)
+
 ;;; init.el ends here
