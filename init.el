@@ -209,8 +209,11 @@
           :host "api.anthropic.com"
           :protocol "https"
           :endpoint "/v1/messages"
+          :models '(claude-3-5-sonnet-20241022
+                   claude-3-opus-20240229
+                   claude-3-haiku-20240307)
         ))
-  (setq gptel-model 'claude-3-opus-20240229))
+  (setq gptel-model 'claude-3-5-sonnet-20241022))
 
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
 
