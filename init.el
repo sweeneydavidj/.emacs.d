@@ -333,4 +333,16 @@
 
 (use-package nov)
 
+(defun dsw-eat-project-in-new-frame ()
+  "Open a new frame and run `eat-project` inside it."
+  (interactive)
+  (let ((frame (make-frame)))
+    (select-frame-set-input-focus frame)
+    (with-selected-frame frame
+      (eat-project))))
+
+(global-set-key (kbd "C-c f e") #'dsw-eat-project-in-new-frame)
+(global-set-key (kbd "C-c f k") #'delete-frame)
+
+
 ;;; init.el ends here
