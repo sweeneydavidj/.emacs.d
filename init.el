@@ -176,6 +176,7 @@
 
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 
+;; https://github.com/ikatyang/tree-sitter-yaml
 (require 'yaml-ts-mode)
 
 ;; https://github.com/camdencheek/tree-sitter-dockerfile
