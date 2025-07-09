@@ -209,18 +209,28 @@
 (use-package gptel
   :ensure t
   :config
-  (setq gptel-backend
-        (gptel-make-anthropic "Claude"
-          :stream t
-          :key (auth-source-pick-first-password :host "api.anthropic.com")
-          :host "api.anthropic.com"
-          :protocol "https"
-          :endpoint "/v1/messages"
-          :models '(claude-3-5-sonnet-20241022
-                   claude-3-opus-20240229
-                   claude-3-haiku-20240307)
-        ))
-  (setq gptel-model 'claude-3-5-sonnet-20241022))
+
+  (gptel-make-anthropic "Claude"
+    :stream t
+    :key (auth-source-pick-first-password :host "api.anthropic.com")
+    :host "api.anthropic.com"
+    :protocol "https"
+    :endpoint "/v1/messages"
+    :models '(claude-3-5-sonnet-20241022
+              claude-3-opus-20240229
+              claude-3-haiku-20240307))
+
+  (gptel-make-openai "OpenAI"
+    :key (auth-source-pick-first-password :host "api.openai.com")
+    ;; :models '(gpt-4.1-mini)
+    )
+
+  ;; (setq gptel-backend (gptel-get-backend "Claude"))
+  ;; (setq gptel-model 'claude-3-5-sonnet-20241022)
+
+  ;; (setq gptel-backend (gptel-get-backend "OpenAI"))
+  ;; (setq gptel-model 'gpt-4.1-mini)
+  )
 
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
 
