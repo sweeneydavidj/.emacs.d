@@ -210,26 +210,20 @@
   :ensure t
   :config
 
+  (gptel-make-openai "OpenAI"
+    :stream t
+    :key (auth-source-pick-first-password :host "api.openai.com"))
+
   (gptel-make-anthropic "Claude"
     :stream t
-    :key (auth-source-pick-first-password :host "api.anthropic.com")
-    :host "api.anthropic.com"
-    :protocol "https"
-    :endpoint "/v1/messages"
-    :models '(claude-3-5-sonnet-20241022
-              claude-3-opus-20240229
-              claude-3-haiku-20240307))
+    :key (auth-source-pick-first-password :host "api.anthropic.com"))
 
-  (gptel-make-openai "OpenAI"
-    :key (auth-source-pick-first-password :host "api.openai.com")
-    ;; :models '(gpt-4.1-mini)
-    )
+  (gptel-make-gemini "Gemini"
+    :stream t
+    :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))
 
   ;; (setq gptel-backend (gptel-get-backend "Claude"))
   ;; (setq gptel-model 'claude-3-5-sonnet-20241022)
-
-  ;; (setq gptel-backend (gptel-get-backend "OpenAI"))
-  ;; (setq gptel-model 'gpt-4.1-mini)
   )
 
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
