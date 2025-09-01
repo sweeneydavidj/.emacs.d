@@ -351,5 +351,9 @@
 (global-set-key (kbd "C-c f e") #'dsw-eat-project-in-new-frame)
 (global-set-key (kbd "C-c f k") #'delete-frame)
 
+(use-package dot-mode
+  :config
+  (global-dot-mode t))
+
 
 ;;; init.el ends here
