@@ -178,10 +178,7 @@
 
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 
-;; https://github.com/ikatyang/tree-sitter-yaml
 (require 'yaml-ts-mode)
-
-;; https://github.com/camdencheek/tree-sitter-dockerfile
 (require 'dockerfile-ts-mode)
 
 (setq js-indent-level 2)
@@ -363,6 +360,7 @@
            '(
              (elixir . ("https://github.com/elixir-lang/tree-sitter-elixir" "v0.3.4"))
              (heex . ("https://github.com/phoenixframework/tree-sitter-heex" "v0.8.0"))
+             (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile" "v0.2.0"))
              ;; (css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
              ;; (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.20.0"))
              ;; (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.20.1"))
@@ -374,7 +372,7 @@
              ;; (toml . ("https://github.com/tree-sitter/tree-sitter-toml" "v0.5.1"))
              ;; (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
              ;; (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
-             ;; (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
+             (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
              ))
     (add-to-list 'treesit-language-source-alist grammar)
     ;; Only install `grammar' if we don't already have it
