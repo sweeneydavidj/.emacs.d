@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: inspect
+# key: ypioi
+# --
+|> IO.inspect(${1})
