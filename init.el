@@ -221,8 +221,8 @@
     :stream t
     :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))
 
-  ;; (setq gptel-backend (gptel-get-backend "Claude"))
-  ;; (setq gptel-model 'claude-3-5-sonnet-20241022)
+  (setq gptel-backend (gptel-get-backend "Claude"))
+  (setq gptel-model 'claude-sonnet-4-20250514)
   )
 
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
