@@ -173,10 +173,13 @@
 (require 'eglot)
 (add-hook 'elixir-ts-mode-hook 'eglot-ensure)
 
-(setq major-mode-remap-alist
-      '((python-mode . python-ts-mode)))
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+(add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode))
 
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
+
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
 (require 'yaml-ts-mode)
 (require 'dockerfile-ts-mode)
@@ -371,7 +374,7 @@
              ;; (rust . ("https://github.com/tree-sitter/tree-sitter-rust" "v0.21.2"))
              ;; (toml . ("https://github.com/tree-sitter/tree-sitter-toml" "v0.5.1"))
              ;; (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
-             ;; (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
+             (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
              (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
              ))
     (add-to-list 'treesit-language-source-alist grammar)
