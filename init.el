@@ -384,4 +384,14 @@
     (unless (treesit-language-available-p (car grammar))
       (treesit-install-language-grammar (car grammar)))))
 
+
+;; https://github.com/akermu/emacs-libvterm
+;; sudo apt install cmake
+;; sudo apt install libtool
+;; sudo apt install libtool-bin
+(use-package vterm)
+
+;; https://laurencewarne.github.io/emacs/programming/2022/12/26/exploring-proced.html
+(setq proced-enable-color-flag t)
+
 ;;; init.el ends here
