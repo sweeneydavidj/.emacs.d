@@ -130,6 +130,8 @@
   :init
   (marginalia-mode))
 
+(use-package consult)
+
 (use-package rg)
 
 (use-package magit
@@ -286,6 +288,9 @@
   "l" #'find-library
   "h" #'eldoc)
 
+(defvar-keymap dsw-consult-map
+  "s" #'consult-buffer)
+
 (defvar-keymap dsw-window-map
   "e" #'balance-windows
   "d" #'delete-window
@@ -309,6 +314,7 @@
 (keymap-global-set "C-c f" (cons "file" dsw-file-map))
 (keymap-global-set "C-c g" (cons "git" dsw-git-map))
 (keymap-global-set "C-c h" (cons "help" dsw-help-map))
+(keymap-global-set "C-c s" (cons "consult" dsw-consult-map))
 (keymap-global-set "C-c w" (cons "window" dsw-window-map))
 (keymap-global-set "C-c y" (cons "fly" dsw-fly-map))
 
