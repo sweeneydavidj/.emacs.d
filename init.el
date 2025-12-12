@@ -23,7 +23,15 @@
 (setq backup-directory-alist `(("." . "~/tmp/emacs-backups/")))
 (setq lock-file-name-transforms `((".*" "~/tmp/emacs-lockfiles/" t)))
 
+;; save buffer
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+
+(defadvice switch-to-buffer (before save-buffer-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice other-window (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice other-frame (before other-frame-now activate)
+  (when buffer-file-name (save-buffer)))
 
 (scroll-bar-mode 1)
 (tool-bar-mode -1)
