@@ -238,6 +238,27 @@
   (setq gptel-model 'claude-sonnet-4-20250514)
   )
 
+;; https://github.com/akermu/emacs-libvterm
+;; sudo apt install cmake
+;; sudo apt install libtool
+;; sudo apt install libtool-bin
+(use-package vterm
+  :init
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              (setq-local global-hl-line-mode nil))))
+
+(defun dsw-vterm-project ()
+  "Open a vterm buffer in the current project root, named after the project."
+  (interactive)
+  (let* ((proj (project-current))
+         (root (if proj (project-root proj) default-directory))
+         (name (if proj
+                   (file-name-nondirectory (directory-file-name root))
+                 "no-project")))
+    (let ((default-directory root))
+      (vterm (format "*vterm: %s*" name)))))
+
 (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
 
 (defun dsw-mix-format()
@@ -397,18 +418,6 @@
     ;; this obviously prevents that from happening.
     (unless (treesit-language-available-p (car grammar))
       (treesit-install-language-grammar (car grammar)))))
-
-
-;; https://github.com/akermu/emacs-libvterm
-;; sudo apt install cmake
-;; sudo apt install libtool
-;; sudo apt install libtool-bin
-(use-package vterm
-  :init
-  (add-hook 'vterm-mode-hook
-            (lambda ()
-              (setq-local global-hl-line-mode nil))))
-
 
 ;; https://laurencewarne.github.io/emacs/programming/2022/12/26/exploring-proced.html
 (setq proced-enable-color-flag t)
