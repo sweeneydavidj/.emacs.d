@@ -213,6 +213,7 @@
 (use-package gptel
   :ensure t
   :config
+  (require 'gptel-integrations)
 
   (gptel-make-openai "OpenAI"
     :stream t
@@ -228,7 +229,18 @@
 
   (setq gptel-backend (gptel-get-backend "Claude"))
   (setq gptel-model 'claude-sonnet-4-20250514)
+  (setq gptel-track-media t)
   )
+
+(use-package mcp
+  :ensure t
+  :after gptel
+  :custom (mcp-hub-servers
+           `(("filesystem" . (:command "npx"
+                              :args ("-y" "@modelcontextprotocol/server-filesystem")
+                              :roots ("/home/david/tmp/")))))
+  :config (require 'mcp-hub)
+  :hook (after-init . mcp-hub-start-all-server))
 
 ;; https://github.com/akermu/emacs-libvterm
 ;; sudo apt install cmake
