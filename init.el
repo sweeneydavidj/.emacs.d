@@ -65,6 +65,7 @@
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
 
+;; M-x sql-connect
 (setq sql-connection-alist
       '((marko_dev (sql-product 'postgres)
                    (sql-user "postgres")
