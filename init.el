@@ -228,11 +228,14 @@
     :stream t
     :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))
 
-  (setq gptel-backend (gptel-get-backend "Claude"))
-  (setq gptel-model 'claude-sonnet-4-20250514)
+  ;; (setq gptel-backend (gptel-get-backend "Claude"))
+  ;; (setq gptel-model 'claude-sonnet-4-20250514)
+  (setq gptel-backend (gptel-get-backend "Gemini"))
+  (setq gptel-model 'gemini-flash-latest)
   (setq gptel-track-media t)
   )
 
+;; remember to run gptel-mcp-connect - to make mcp available to gptel
 (use-package mcp
   :ensure t
   :after gptel
