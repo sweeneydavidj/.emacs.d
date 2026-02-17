@@ -226,7 +226,7 @@
 
   (gptel-make-gemini "Gemini"
     :stream t
-    :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))
+    :key (auth-source-pick-first-password :user "hal" :host "generativelanguage.googleapis.com"))
 
   ;; (setq gptel-backend (gptel-get-backend "Claude"))
   ;; (setq gptel-model 'claude-sonnet-4-20250514)
