@@ -358,6 +358,17 @@
 (setq frame-title-format
       '(buffer-file-name "%f" "%b"))
 
+(setq-default header-line-format
+              '(" " (:eval
+                     (if-let* ((proj (project-current))
+                               (root (project-root proj))
+                               (buf-file (buffer-file-name)))
+                         (concat
+                          (file-name-nondirectory (directory-file-name root))
+                          "/"
+                          (file-relative-name buf-file root))
+                       (abbreviate-file-name (or (buffer-file-name) "%b"))))))
+
 (use-package pulsar
   :config
   (pulsar-global-mode)
