@@ -182,7 +182,7 @@
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
 (require 'yaml-ts-mode)
 (require 'dockerfile-ts-mode)
@@ -427,7 +427,7 @@
              ;; (python . ("https://github.com/tree-sitter/tree-sitter-python" "v0.20.4"))
              ;; (rust . ("https://github.com/tree-sitter/tree-sitter-rust" "v0.21.2"))
              ;; (toml . ("https://github.com/tree-sitter/tree-sitter-toml" "v0.5.1"))
-             ;; (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
+             (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
              (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
              (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
              ))
