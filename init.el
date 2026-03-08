@@ -168,13 +168,24 @@
 (require 'heex-ts-mode)
 (require 'elixir-ts-mode)
 
-;; elixir-mode, elixir-ts-mode, heex-ts-mode
-;; are setup in the eglot-server-programs variable to look for
-;; language_server.sh
-;; so just add that to the path in ~/.profile using...
-;; PATH="/opt/elixir-ls/release:$PATH"
+;; Download Expert to:
+;; ~/.local/bin/expert_linux_amd64
+
 (require 'eglot)
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '((elixir-mode elixir-ts-mode heex-ts-mode) . ("expert_linux_amd64" "--stdio"))))
+
+;; Seems in Expert for functions with default params for xref-find-definition (M-.) it opens in an xref buffer.
+;; Here is a workaround for that.
+(defun dsw-xref-jump-to-first (fetcher &optional _alist)
+  "Jump to the first definition provided by FETCHER without showing the xref buffer."
+  (xref-pop-to-location (car (funcall fetcher)) nil))
+
+(setq xref-show-definitions-function #'dsw-xref-jump-to-first)
+
 (add-hook 'elixir-ts-mode-hook 'eglot-ensure)
+(add-hook 'heex-ts-mode-hook 'eglot-ensure)
 
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode))
