@@ -141,8 +141,7 @@
   :config
   (setq magit-diff-refine-hunk 'all)
   (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
-  (setq magit-bury-buffer-function 'magit-restore-window-configuration)
-  (setq magit-ediff-dwim-show-on-hunks t))
+  (setq magit-bury-buffer-function 'magit-restore-window-configuration))
 
 (setq diff-switches "-u"
       ediff-custom-diff-options "-U3"
