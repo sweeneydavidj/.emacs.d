@@ -452,7 +452,7 @@
 
 ;; curl -fsSL https://claude.ai/install.sh | bash
 ;; npm install -g @agentclientprotocol/claude-agent-acp
-;; which claude-agent-acp
+;; npm install -g @ast-grep/cli
 
 (use-package agent-shell
   :config
