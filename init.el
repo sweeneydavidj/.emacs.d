@@ -247,15 +247,16 @@
   )
 
 ;; remember to run gptel-mcp-connect - to make mcp available to gptel
-(use-package mcp
-  :ensure t
-  :after gptel
-  :custom (mcp-hub-servers
-           `(("filesystem" . (:command "npx"
-                              :args ("-y" "@modelcontextprotocol/server-filesystem")
-                              :roots ("/home/david/tmp/")))))
-  :config (require 'mcp-hub)
-  :hook (after-init . mcp-hub-start-all-server))
+
+;; (use-package mcp
+;;   :ensure t
+;;   :after gptel
+;;   :custom (mcp-hub-servers
+;;            `(("filesystem" . (:command "npx"
+;;                               :args ("-y" "@modelcontextprotocol/server-filesystem")
+;;                               :roots ("/home/david/tmp/")))))
+;;   :config (require 'mcp-hub)
+;;   :hook (after-init . mcp-hub-start-all-server))
 
 ;; https://github.com/akermu/emacs-libvterm
 ;; sudo apt install cmake
