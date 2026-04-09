@@ -1,3 +1,4 @@
+;;; init.el --- description -*- lexical-binding: t -*-
 ;;; PACKAGE --- Some summary
 
 ;;; Commentary:
@@ -447,5 +448,10 @@
     ;; this obviously prevents that from happening.
     (unless (treesit-language-available-p (car grammar))
       (treesit-install-language-grammar (car grammar)))))
+
+(use-package agent-shell
+  :config
+  (setq agent-shell-google-authentication
+        (agent-shell-google-make-authentication :login t)))
 
 ;;; init.el ends here
