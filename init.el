@@ -450,8 +450,14 @@
     (unless (treesit-language-available-p (car grammar))
       (treesit-install-language-grammar (car grammar)))))
 
+;; curl -fsSL https://claude.ai/install.sh | bash
+;; npm install -g @agentclientprotocol/claude-agent-acp
+;; which claude-agent-acp
+
 (use-package agent-shell
   :config
+  (setq agent-shell-anthropic-authentication
+        (agent-shell-anthropic-make-authentication :login t))
   (setq agent-shell-google-authentication
         (agent-shell-google-make-authentication :login t)))
 
