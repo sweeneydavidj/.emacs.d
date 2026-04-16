@@ -208,7 +208,8 @@
   (setq highlight-indent-guides-auto-top-character-face-perc 75))
 
 (use-package git-gutter
-  :hook (prog-mode . git-gutter-mode)
+  :hook ((prog-mode . git-gutter-mode)
+         (text-mode . git-gutter-mode))
   :config
   (setq git-gutter:update-interval 0.5)
   (setq git-gutter:added-sign "|")
