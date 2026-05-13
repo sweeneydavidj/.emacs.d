@@ -207,14 +207,13 @@
   (setq highlight-indent-guides-responsive 'top)
   (setq highlight-indent-guides-auto-top-character-face-perc 75))
 
-(use-package git-gutter
-  :hook ((prog-mode . git-gutter-mode)
-         (text-mode . git-gutter-mode))
+(use-package diff-hl
   :config
-  (setq git-gutter:update-interval 0.5)
-  (setq git-gutter:added-sign "|")
-  (setq git-gutter:modified-sign "|")
-  (setq git-gutter:lighter " GG"))
+  (global-diff-hl-mode)
+  (diff-hl-margin-mode)
+  (diff-hl-flydiff-mode)
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (use-package evil-nerd-commenter)
 
