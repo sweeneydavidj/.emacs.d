@@ -461,4 +461,7 @@ With a prefix argument FORCE (e.g., C-u M-x), force reinstall all grammars."
   (setq agent-shell-google-authentication
         (agent-shell-google-make-authentication :login t)))
 
+(global-set-key (kbd "M-p") #'scroll-down-line)
+(global-set-key (kbd "M-n") #'scroll-up-line)
+
 ;;; init.el ends here
