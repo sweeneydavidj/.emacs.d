@@ -422,13 +422,14 @@
   (global-dot-mode t))
 
 ;; See https://github.com/mickeynp/combobulate
-(defun dsw-setup-install-grammars ()
-  "Install Tree-sitter grammars if they are absent."
-  (interactive)
+(defun dsw-setup-install-grammars (&optional force)
+  "Install Tree-sitter grammars if they are absent.
+With a prefix argument FORCE (e.g., C-u M-x), force reinstall all grammars."
+  (interactive "P")
   (dolist (grammar
            '(
-             (elixir . ("https://github.com/elixir-lang/tree-sitter-elixir" "v0.3.4"))
-             (heex . ("https://github.com/phoenixframework/tree-sitter-heex" "v0.8.0"))
+             (elixir . ("https://github.com/elixir-lang/tree-sitter-elixir" "v0.3.5"))
+             (heex . ("https://github.com/phoenixframework/tree-sitter-heex" "v0.9.0"))
              (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile" "v0.2.0"))
              ;; (css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
              ;; (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.20.0"))
@@ -444,10 +445,9 @@
              (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
              ))
     (add-to-list 'treesit-language-source-alist grammar)
-    ;; Only install `grammar' if we don't already have it
-    ;; installed. However, if you want to *update* a grammar then
-    ;; this obviously prevents that from happening.
-    (unless (treesit-language-available-p (car grammar))
+
+    ;; If FORCE is active, or if the grammar isn't available yet, install it.
+    (when (or force (not (treesit-language-available-p (car grammar))))
       (treesit-install-language-grammar (car grammar)))))
 
 ;; curl -fsSL https://claude.ai/install.sh | bash
