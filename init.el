@@ -173,6 +173,7 @@
 
 (require 'eglot)
 (with-eval-after-load 'eglot
+  (setq eglot-code-action-indications nil)
   (add-to-list 'eglot-server-programs
                '((elixir-mode elixir-ts-mode heex-ts-mode) . ("expert_linux_amd64" "--stdio"))))
 
