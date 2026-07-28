@@ -450,10 +450,6 @@ With a prefix argument FORCE (e.g., C-u M-x), force reinstall all grammars."
     (when (or force (not (treesit-language-available-p (car grammar))))
       (treesit-install-language-grammar (car grammar)))))
 
-;; curl -fsSL https://claude.ai/install.sh | bash
-;; npm install -g @agentclientprotocol/claude-agent-acp
-;; npm install -g @ast-grep/cli
-
 (use-package agent-shell
   :config
   (setq agent-shell-anthropic-authentication
