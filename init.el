@@ -417,6 +417,11 @@
 
 (global-set-key (kbd "C-c f e") #'dsw-eat-project-in-new-frame)
 (global-set-key (kbd "C-c f k") #'delete-frame)
+(global-set-key (kbd "C-x k") #'kill-current-buffer)
+(defvar-keymap dsw-kill-buffer-repeat-map
+  :repeat t
+  "k" #'kill-current-buffer)
+(put #'kill-current-buffer 'repeat-map 'dsw-kill-buffer-repeat-map)
 
 (use-package dot-mode
   :config
