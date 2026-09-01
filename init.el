@@ -466,4 +466,21 @@ With a prefix argument FORCE (e.g., C-u M-x), force reinstall all grammars."
 (global-set-key (kbd "M-p") #'scroll-down-line)
 (global-set-key (kbd "M-n") #'scroll-up-line)
 
+(defun dsw-claude-memory-dir ()
+  "Open the Claude memory dir for the current project/pwd in dired.
+Derives the path by translating / and _ to - like Claude Code does."
+  (interactive)
+  (let* ((root (directory-file-name
+                (expand-file-name
+                 (or (when-let ((p (project-current))) (project-root p))
+                     default-directory))))
+         (slug (replace-regexp-in-string "[/_]" "-" root))
+         (mem  (expand-file-name (concat slug "/memory/")
+                                 "~/.claude/projects/")))
+    (if (file-directory-p mem)
+        (dired mem)
+      (user-error "No Claude memory dir at %s" mem))))
+
+(global-set-key (kbd "C-c a m") #'dsw-claude-memory-dir)
+
 ;;; init.el ends here
