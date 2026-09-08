@@ -411,6 +411,35 @@ Worktrees of one repo share the store of `dsw--repo-root'."
 
 (global-set-key (kbd "C-c a m") #'dsw-claude-memory-dir)
 
+(use-package agent-shell
+  :config
+  (setq agent-shell-anthropic-authentication
+        (agent-shell-anthropic-make-authentication :login t))
+  (setq agent-shell-google-authentication
+        (agent-shell-google-make-authentication :login t)))
+
+(global-set-key (kbd "M-p") #'scroll-down-line)
+(global-set-key (kbd "M-n") #'scroll-up-line)
+
+;; Clickable file references in agent-shell buffers.
+;; Matches repo-relative (lib/marko/foo.ex:289), home-relative
+;; (~/.claude/CLAUDE.md), and absolute (/home/david/x.el) refs, including
+;; inside backticks. The :line suffix is optional; without it the jump opens
+;; the file. Requires at least one "/" to avoid false positives (URLs with
+;; ports, SHAs, etc). Severity is warning (the final 1): info-level matches
+;; are skipped by M-g M-n at the default compilation-skip-threshold, and
+;; error-level paints the buffer red.
+;; RET/mouse-1 on a ref jumps; M-g M-n / M-g M-p cycle through refs.
+(require 'compile)
+
+(add-to-list 'compilation-error-regexp-alist-alist
+             '(agent-file-ref
+               "\\(?:^\\|[ `(]\\)\\(\\(?:~/\\|/\\)?[[:alnum:]_.-]+\\(?:/[[:alnum:]_.-]+\\)+\\.[[:alnum:]]+\\)\\(?::\\([0-9]+\\)\\)?"
+               1 2 nil 1))
+(add-to-list 'compilation-error-regexp-alist 'agent-file-ref)
+
+(add-hook 'agent-shell-mode-hook #'compilation-shell-minor-mode)
+
 (defvar-keymap dsw-buffer-map
   "B" #'switch-to-buffer-other-window
   "n" #'next-buffer
@@ -553,16 +582,6 @@ With a prefix argument FORCE (e.g., C-u M-x), force reinstall all grammars."
     ;; If FORCE is active, or if the grammar isn't available yet, install it.
     (when (or force (not (treesit-language-available-p (car grammar))))
       (treesit-install-language-grammar (car grammar)))))
-
-(use-package agent-shell
-  :config
-  (setq agent-shell-anthropic-authentication
-        (agent-shell-anthropic-make-authentication :login t))
-  (setq agent-shell-google-authentication
-        (agent-shell-google-make-authentication :login t)))
-
-(global-set-key (kbd "M-p") #'scroll-down-line)
-(global-set-key (kbd "M-n") #'scroll-up-line)
 
 ;; Start the Emacs server so external shells can open files in this
 ;; session via emacsclient ($EDITOR). Finish an edit with C-x #.
