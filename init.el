@@ -321,6 +321,96 @@
 (with-eval-after-load 'dired
   (keymap-set dired-mode-map "^" #'dsw-dired-up-directory))
 
+(defun dsw--repo-root ()
+  "Root shared by all worktrees of the repo containing `default-directory'.
+The parent of the git common dir: the bare repo dir in a bare layout,
+the main checkout in a normal one.  Nil outside a git repository."
+  (when-let ((gitdir (ignore-errors
+                       (car (process-lines "git" "rev-parse" "--git-common-dir")))))
+    (directory-file-name
+     (file-name-directory (expand-file-name gitdir default-directory)))))
+
+(defun dsw--worktree-root ()
+  "Directory where new worktrees for the current repo belong.
+Inside the repo root when it is bare (worktrees as subdirectories),
+beside the checkout when it is a normal repo (worktrees as siblings).
+Signals a `user-error' outside a git repository."
+  (let* ((root (or (dsw--repo-root)
+                   (user-error "Not in a git repository")))
+         (bare (equal "true"
+                      (car (process-lines "git" "-C" root "rev-parse"
+                                          "--is-bare-repository")))))
+    (if bare root (directory-file-name (file-name-directory root)))))
+
+(defvar dsw-worktree-remote "origin"
+  "Remote that `dsw-worktree-ref' is fetched from.")
+
+(defvar dsw-worktree-ref "main"
+  "Branch on `dsw-worktree-remote' that new worktrees are created from.")
+
+(defun dsw-worktree-dir-from-branch (branch)
+  "Derive a worktree directory name from a Linear BRANCH name.
+Strips the `user/' and `it-NNNN-' prefixes and turns hyphens into
+underscores, e.g. david/it-4478-product-refactor-migration ->
+product_refactor_migration."
+  (let* ((no-user (replace-regexp-in-string "\\`[^/]+/" "" branch))
+         (no-ticket (replace-regexp-in-string "\\`[a-z]+-[0-9]+-" "" no-user)))
+    (replace-regexp-in-string "-" "_" no-ticket)))
+
+(defun dsw--git (&rest args)
+  "Run git ARGS in `default-directory', logging to *dsw-worktree*.
+On failure, pop the log buffer and signal a `user-error'."
+  (unless (zerop (apply #'call-process "git" nil "*dsw-worktree*" nil args))
+    (pop-to-buffer "*dsw-worktree*")
+    (user-error "git %s failed" (car args))))
+
+(defun dsw-new-worktree (branch dir)
+  "Create a new git worktree for a Linear ticket.
+BRANCH is the full branch name from Linear's \"Copy git branch name\";
+it is defaulted from the kill ring.  DIR is the worktree directory name,
+defaulted from BRANCH and editable.  Fetches `dsw-worktree-ref' from
+`dsw-worktree-remote', creates the worktree branched off it, and opens
+it in Dired."
+  (interactive
+   (let* ((default (string-trim (or (ignore-errors (current-kill 0 t)) "")))
+          (branch (read-string "Branch name: " default))
+          (dir (read-string "Worktree dir: "
+                            (dsw-worktree-dir-from-branch branch))))
+     (list branch dir)))
+  (let* ((path (expand-file-name dir (dsw--worktree-root)))
+         (base (concat dsw-worktree-remote "/" dsw-worktree-ref)))
+    (when (file-exists-p path)
+      (user-error "Worktree directory already exists: %s" path))
+    (with-current-buffer (get-buffer-create "*dsw-worktree*")
+      (erase-buffer))
+    (message "Fetching %s..." base)
+    (dsw--git "fetch" dsw-worktree-remote dsw-worktree-ref)
+    (message "Creating worktree %s..." dir)
+    (dsw--git "worktree" "add" path "-b" branch base)
+    (message "Worktree ready: %s" path)
+    (dired path)))
+
+(global-set-key (kbd "C-c g w") #'dsw-new-worktree)
+
+(defun dsw-claude-memory-dir ()
+  "Open the Claude memory dir for the current project/pwd in dired.
+Derives the path by translating / and _ to - like Claude Code does.
+Worktrees of one repo share the store of `dsw--repo-root'."
+  (interactive)
+  (let* ((root (or (dsw--repo-root)
+                   (directory-file-name
+                    (expand-file-name
+                     (or (when-let ((p (project-current))) (project-root p))
+                         default-directory)))))
+         (slug (replace-regexp-in-string "[/_]" "-" root))
+         (mem  (expand-file-name (concat slug "/memory/")
+                                 "~/.claude/projects/")))
+    (if (file-directory-p mem)
+        (dired mem)
+      (user-error "No Claude memory dir at %s" mem))))
+
+(global-set-key (kbd "C-c a m") #'dsw-claude-memory-dir)
+
 (defvar-keymap dsw-buffer-map
   "B" #'switch-to-buffer-other-window
   "n" #'next-buffer
@@ -474,21 +564,5 @@ With a prefix argument FORCE (e.g., C-u M-x), force reinstall all grammars."
 (global-set-key (kbd "M-p") #'scroll-down-line)
 (global-set-key (kbd "M-n") #'scroll-up-line)
 
-(defun dsw-claude-memory-dir ()
-  "Open the Claude memory dir for the current project/pwd in dired.
-Derives the path by translating / and _ to - like Claude Code does."
-  (interactive)
-  (let* ((root (directory-file-name
-                (expand-file-name
-                 (or (when-let ((p (project-current))) (project-root p))
-                     default-directory))))
-         (slug (replace-regexp-in-string "[/_]" "-" root))
-         (mem  (expand-file-name (concat slug "/memory/")
-                                 "~/.claude/projects/")))
-    (if (file-directory-p mem)
-        (dired mem)
-      (user-error "No Claude memory dir at %s" mem))))
-
-(global-set-key (kbd "C-c a m") #'dsw-claude-memory-dir)
 
 ;;; init.el ends here
