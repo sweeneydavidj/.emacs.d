@@ -564,5 +564,10 @@ With a prefix argument FORCE (e.g., C-u M-x), force reinstall all grammars."
 (global-set-key (kbd "M-p") #'scroll-down-line)
 (global-set-key (kbd "M-n") #'scroll-up-line)
 
+;; Start the Emacs server so external shells can open files in this
+;; session via emacsclient ($EDITOR). Finish an edit with C-x #.
+(require 'server)
+(unless (server-running-p)
+  (server-start))
 
 ;;; init.el ends here
