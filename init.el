@@ -66,6 +66,14 @@
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
 
+;; Draggable window dividers. With GTK scroll bars the boundary between
+;; side-by-side windows has no grabbable pixels, so mouse resizing fails
+;; without this.
+(setq window-divider-default-places t
+      window-divider-default-right-width 6
+      window-divider-default-bottom-width 6)
+(window-divider-mode 1)
+
 ;; M-x sql-connect
 (setq sql-connection-alist
       '((marko_dev (sql-product 'postgres)
