@@ -390,8 +390,6 @@ it in Dired."
     (message "Worktree ready: %s" path)
     (dired path)))
 
-(global-set-key (kbd "C-c g w") #'dsw-new-worktree)
-
 (defun dsw-claude-memory-dir ()
   "Open the Claude memory dir for the current project/pwd in dired.
 Derives the path by translating / and _ to - like Claude Code does.
@@ -408,8 +406,6 @@ Worktrees of one repo share the store of `dsw--repo-root'."
     (if (file-directory-p mem)
         (dired mem)
       (user-error "No Claude memory dir at %s" mem))))
-
-(global-set-key (kbd "C-c a m") #'dsw-claude-memory-dir)
 
 (use-package agent-shell
   :config
@@ -440,6 +436,9 @@ Worktrees of one repo share the store of `dsw--repo-root'."
 
 (add-hook 'agent-shell-mode-hook #'compilation-shell-minor-mode)
 
+(defvar-keymap dsw-agent-map
+  "m" #'dsw-claude-memory-dir)
+
 (defvar-keymap dsw-buffer-map
   "B" #'switch-to-buffer-other-window
   "n" #'next-buffer
@@ -459,6 +458,7 @@ Worktrees of one repo share the store of `dsw--repo-root'."
   :repeat (:enter (git-gutter:next-hunk git-gutter:previous-hunk))
   "n" #'git-gutter:next-hunk
   "p" #'git-gutter:previous-hunk
+  "w" #'dsw-new-worktree
   )
 
 (defvar-keymap dsw-help-map
@@ -486,6 +486,7 @@ Worktrees of one repo share the store of `dsw--repo-root'."
   "b" #'flymake-show-buffer-diagnostics
   "p" #'flymake-show-project-diagnostics)
 
+(keymap-global-set "C-c a" (cons "agent" dsw-agent-map))
 (keymap-global-set "C-c b" (cons "buffer" dsw-buffer-map))
 (keymap-global-set "C-c c" (cons "comment" dsw-comment-map))
 (keymap-global-set "C-c f" (cons "file" dsw-file-map))
