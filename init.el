@@ -549,6 +549,16 @@ Worktrees of one repo share the store of `dsw--repo-root'."
   :init
   (add-hook 'completion-at-point-functions #'cape-file))
 
+(require 'org-capture)
+(setq org-directory "/home/david/Documents/notes-private/org/")
+
+(setq org-capture-templates
+      '(
+        ("j" "Journal Entry" entry
+         (file+datetree "journal.org")
+         "* %?\n Entered on %U"
+         )))
+
 ;; See https://github.com/mickeynp/combobulate
 (defun dsw-setup-install-grammars (&optional force)
   "Install Tree-sitter grammars if they are absent.
