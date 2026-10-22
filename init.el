@@ -545,6 +545,10 @@ Worktrees of one repo share the store of `dsw--repo-root'."
   :config
   (global-dot-mode t))
 
+(use-package cape
+  :init
+  (add-hook 'completion-at-point-functions #'cape-file))
+
 ;; See https://github.com/mickeynp/combobulate
 (defun dsw-setup-install-grammars (&optional force)
   "Install Tree-sitter grammars if they are absent.
